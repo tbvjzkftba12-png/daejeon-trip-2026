@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>대전 여행 · 흠뻑쇼 2026.08.22-23</title>
+<style>
+:root{
+  --bg:#f4f6fb; --card:#ffffff; --ink:#1c2333; --sub:#6b7487; --line:#e6eaf2;
+  --navy:#12386b; --blue:#2f6fdd; --sky:#37a6e0; --teal:#12a5a0; --orange:#f2803c;
+  --red:#e05252; --purple:#7b61c9; --gold:#d9a441; --r:16px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg); color:var(--ink); max-width:520px; margin:0 auto;
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  word-break:keep-all; line-height:1.5; padding-bottom:40px; transition:background .5s ease;}
+header{padding:26px 18px 20px; color:#fff; background:linear-gradient(140deg,#12386b,#2f6fdd 55%,#37a6e0);
+  transition:background .5s ease;}
+header .kick{font-size:11.5px; font-weight:700; opacity:.85; letter-spacing:.4px;}
+header h1{font-size:24px; font-weight:800; margin:5px 0 7px; letter-spacing:-.5px;}
+header .sub{font-size:12.5px; opacity:.92;}
+header .hchips{display:flex; gap:6px; margin-top:13px; flex-wrap:wrap;}
+header .hchips span{font-size:11px; font-weight:700; background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.28); border-radius:999px; padding:4px 10px;}
+
+nav{position:sticky; top:0; z-index:50; display:flex; gap:4px; padding:10px 8px;
+  background:rgba(244,246,251,.92); backdrop-filter:blur(10px);}
+nav button{flex:1; border:1px solid var(--line); background:var(--card); color:var(--sub);
+  padding:10px 1px; border-radius:11px; font-size:11.4px; font-weight:700; cursor:pointer;
+  white-space:nowrap; min-width:0; transition:.15s; font-family:inherit; letter-spacing:-.3px;}
+nav button.on{background:var(--navy); border-color:var(--navy); color:#fff;}
+
+main{padding:0 12px;}
+section.tab{display:none;} section.tab.on{display:block; animation:fade .25s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+.card{background:var(--card); border:1px solid var(--line); border-radius:var(--r);
+  padding:18px 16px; margin-bottom:14px; box-shadow:0 2px 10px rgba(18,40,80,.05);}
+.card h2{font-size:15.5px; font-weight:800; margin-bottom:3px; display:flex; align-items:center; gap:7px;}
+.card .cap{font-size:11.8px; color:var(--sub); margin-bottom:13px;}
+.em{font-size:17px;}
+
+/* 날씨 */
+.wx{display:flex; align-items:center; gap:14px; padding:14px 16px;}
+.wx .wico{font-size:38px; flex:none;}
+.wx .wmain{flex:1; min-width:0;} .wx .wmain b{font-size:15px; display:block;}
+.wx .wmain p{font-size:11.5px; color:var(--sub); margin-top:2px;}
+.wx .wtemp{text-align:right; flex:none;}
+.wx .wtemp .hi{font-size:21px; font-weight:800; color:var(--red);}
+.wx .wtemp .lo{font-size:12.5px; color:var(--sub);}
+.wx a{color:var(--blue); font-weight:700; text-decoration:none;}
+body.th-clear{background:#eef6ff;}
+body.th-clear header{background:linear-gradient(140deg,#1668c9,#2f9be0 50%,#ffc46b);}
+body.th-partly{background:#eff4fa;}
+body.th-partly header{background:linear-gradient(140deg,#2a5f9e,#5a9fd4 55%,#c9d9e8);}
+body.th-cloud{background:#f0f2f5;}
+body.th-cloud header{background:linear-gradient(140deg,#4a5a70,#74879e 55%,#a9b8c9);}
+body.th-rain{background:#eceff4;}
+body.th-rain header{background:linear-gradient(140deg,#243b55,#3a5a80 55%,#6a8cae);}
+body.th-storm{background:#eceaf2;}
+body.th-storm header{background:linear-gradient(140deg,#1f2438,#3d3a63 55%,#6b5a8e);}
+body.th-fog{background:#f1f2f3;}
+body.th-fog header{background:linear-gradient(140deg,#5c6570,#8d959e 55%,#bcc2c8);}
+
+/* 원형 차트 */
+.donutWrap{display:flex; flex-direction:column; align-items:center;}
+.donutWrap svg{width:100%; max-width:290px; height:auto;}
+.lgd{display:flex; flex-wrap:wrap; gap:6px 10px; margin-top:12px; width:100%;}
+.lgd div{display:flex; align-items:center; gap:6px; font-size:11.3px; color:var(--sub); width:calc(50% - 5px);}
+.lgd i{width:9px; height:9px; border-radius:3px; flex:none;}
+.lgd b{color:var(--ink); font-weight:700;}
+
+/* 타임라인 */
+.tl .row{position:relative; padding-bottom:14px;}
+.tl .row::before{content:""; position:absolute; left:57px; top:22px; bottom:-2px; width:2px; background:var(--line);}
+.tl .row:last-child::before{display:none;}
+.tl .head{display:flex; gap:12px; cursor:pointer; user-select:none; align-items:flex-start;}
+.tl .time{width:46px; flex:none; font-size:12.5px; font-weight:800; color:var(--navy); text-align:right; padding-top:2px;}
+.tl .dot{width:12px; height:12px; border-radius:50%; margin-top:5px; flex:none;
+  border:3px solid #fff; box-shadow:0 0 0 2px var(--line); background:var(--blue); position:relative; z-index:2;}
+.tl .bd{flex:1; min-width:0;}
+.tl .bd b{font-size:13.8px; font-weight:800; display:block;}
+.tl .bd b::after{content:"▾"; float:right; color:#aab3c5; transition:transform .2s; font-size:12px;}
+.tl .row.open .bd b::after{transform:rotate(180deg); color:var(--blue);}
+.tl .bd p{font-size:11.8px; color:var(--sub); margin-top:2px;}
+.detail{display:none; margin:10px 0 2px 70px; background:#f7f9fd; border:1px solid var(--line);
+  border-radius:13px; padding:12px 13px; font-size:12.8px;}
+.row.open .detail{display:block; animation:fade .2s ease;}
+.detail dl{display:grid; grid-template-columns:62px 1fr; gap:5px 8px; font-size:12.3px;}
+.detail dt{color:var(--sub); font-weight:700;}
+.detail dd{color:var(--ink);}
+.warnbox{background:#fff2f2; border:1px solid #f5cfcf; border-radius:10px; padding:9px 11px;
+  font-size:12px; color:#a33; margin-top:9px; line-height:1.55;}
+.okbox{background:#eefaf6; border:1px solid #bfe6da; border-radius:10px; padding:9px 11px;
+  font-size:12px; color:#186b57; margin-top:9px; line-height:1.55;}
+
+/* 장소 카드 */
+.plc{display:flex; gap:9px; padding:9px 0; border-top:1px dashed #dde3ee;}
+.plc:first-of-type{border-top:none;}
+.plc .pi{width:30px; height:30px; border-radius:9px; background:#eef2fa; flex:none;
+  display:flex; align-items:center; justify-content:center; font-size:15px;}
+.plc .pb{flex:1; min-width:0;}
+.plc .pb b{font-size:13px; font-weight:800;}
+.plc .pb p{font-size:11.6px; color:var(--sub); margin:2px 0 5px;}
+.plc .lnks{display:flex; gap:5px; flex-wrap:wrap;}
+.plc .lnks a{font-size:11px; font-weight:700; background:#fff; border:1px solid #d8e0ef;
+  border-radius:999px; padding:3px 9px; color:var(--blue); text-decoration:none;}
+
+/* 예산 */
+.bgt .bi{display:flex; justify-content:space-between; gap:10px; padding:8px 0; border-bottom:1px dashed var(--line); font-size:12.8px;}
+.bgt .bi span:first-child{color:var(--ink);}
+.bgt .bi span:last-child{font-weight:700; color:var(--navy); white-space:nowrap;}
+.bgt .tot{display:flex; justify-content:space-between; padding:12px 2px 2px; font-weight:800; color:var(--navy); font-size:14px;}
+.bars{margin-top:6px;}
+.bars .brow{margin-bottom:10px;}
+.bars .blab{display:flex; justify-content:space-between; font-size:11.8px; margin-bottom:4px;}
+.bars .btrack{background:#eef1f7; border-radius:99px; height:16px; overflow:hidden;}
+.bars .bfill{height:16px; border-radius:99px;}
+
+/* 체크리스트 */
+.chk{list-style:none;}
+.chk li{display:flex; gap:9px; align-items:flex-start; padding:7px 0; border-bottom:1px dashed var(--line); font-size:12.8px;}
+.chk li:last-child{border-bottom:none;}
+.chk li i{font-style:normal; flex:none;}
+
+/* 인스타 아카이브 */
+.igseg{display:flex; gap:6px; margin-bottom:11px;}
+.igseg button{flex:1; border:1px solid var(--line); background:var(--card); color:var(--sub);
+  padding:9px 2px; border-radius:11px; font-size:12.3px; font-weight:700; cursor:pointer; font-family:inherit;}
+.igseg button.on{background:var(--purple); border-color:var(--purple); color:#fff;}
+.locs{display:flex; gap:5px; flex-wrap:wrap; margin-bottom:13px;}
+.locs button{border:1px solid var(--line); background:var(--card); color:var(--sub);
+  padding:6px 11px; border-radius:999px; font-size:11.5px; font-weight:700; cursor:pointer; font-family:inherit;}
+.locs button.on{background:var(--navy); border-color:var(--navy); color:#fff;}
+.thh{font-size:12.3px; font-weight:800; color:var(--sub); margin:14px 0 6px; display:flex; align-items:center; gap:6px;}
+.thh::after{content:""; flex:1; height:1px; background:var(--line);}
+.pl-item{border:1px solid var(--line); border-radius:12px; padding:11px 12px; margin-bottom:7px; cursor:pointer; background:var(--card);}
+.pl-item .pt{display:flex; gap:9px; align-items:center;}
+.pl-item .pt .ic{font-size:17px; flex:none;}
+.pl-item .pt b{font-size:13.2px; font-weight:800; flex:1; min-width:0;}
+.pl-item .pt .dt{font-size:10.8px; color:var(--sub); flex:none;}
+.pl-item .body{display:none; margin-top:10px; padding-top:10px; border-top:1px dashed var(--line);}
+.pl-item.open .body{display:block; animation:fade .2s ease;}
+dl.kv2{display:grid; grid-template-columns:58px 1fr; gap:5px 8px; font-size:12.2px;}
+dl.kv2 dt{color:var(--sub); font-weight:700;}
+.rct{background:#f4f1fb; border:1px solid #ddd4f0; border-radius:9px; padding:8px 10px;
+  font-size:11.8px; color:#5a4a86; margin-top:9px; line-height:1.55;}
+.iglnk{display:flex; gap:5px; flex-wrap:wrap; margin-top:9px;}
+.iglnk a{font-size:11px; font-weight:700; background:#fff; border:1px solid #d8e0ef;
+  border-radius:999px; padding:4px 10px; color:var(--blue); text-decoration:none;}
+.igcnt{font-size:11.5px; color:var(--sub); text-align:center; margin-top:14px;}
+
+.tagline{display:flex; gap:5px; flex-wrap:wrap; margin-top:9px;}
+.tagline span{font-size:10.8px; font-weight:700; border-radius:999px; padding:3px 9px; color:#fff;}
+footer{text-align:center; font-size:11px; color:var(--sub); padding:22px 16px 8px; line-height:1.7;}
+a.blk{display:block; text-align:center; background:var(--navy); color:#fff; text-decoration:none;
+  font-size:12.8px; font-weight:700; padding:11px; border-radius:12px; margin-top:10px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kick">SUMMER SWAG 2026 · FINAL</div>
+  <h1>대전 흠뻑쇼 여행</h1>
+  <div class="sub">2026. 08. 22 (토) ~ 08. 23 (일) · 1박 2일 · 건모 &amp; 희주</div>
+  <div class="hchips">
+    <span>🚗 자차 · 오산 출발</span>
+    <span>🏠 대흥동 스테이 와유</span>
+    <span>💦 목원대 대운동장</span>
+  </div>
+</header>
+
+<nav>
+  <button class="on" data-t="d1">Day 1</button>
+  <button data-t="d2">Day 2</button>
+  <button data-t="info">정보</button>
+  <button data-t="pick">추천</button>
+  <button data-t="save">저장</button>
+  <button data-t="insta">인스타</button>
+</nav>
+
+<main>
+
+<!-- ============ DAY 1 ============ -->
+<section class="tab on" id="d1">
+
+  <div class="card wx" id="wx-d1"><div class="wico">⏳</div><div class="wmain"><b>날씨 불러오는 중…</b><p>8/22 (토) 대전</p></div></div>
+
+  <div class="card">
+    <h2><span class="em">🕐</span> Day 1 — 하루 흐름</h2>
+    <div class="cap">10시 오산 출발 → 목천 픽업 → 대전 → 18시 흠뻑쇼</div>
+    <div class="donutWrap" id="chart-d1"></div>
+  </div>
+
+  <div class="card">
+    <h2><span class="em">📍</span> Day 1 타임라인</h2>
+    <div class="cap">항목을 탭하면 상세가 열려요</div>
+    <div class="tl">
+
+      <div class="row">
+        <div class="head"><div class="time">10:00</div><div class="dot" style="background:#7b61c9"></div>
+        <div class="bd"><b>오산 출발</b><p>오산 자택 · 내 차</p></div></div>
+        <div class="detail">
+          <dl>
+            <dt>출발지</dt><dd>오산 자택</dd>
+            <dt>다음</dt><dd>목천에서 희주 픽업</dd>
+            <dt>거리</dt><dd>약 55km · 45~55분 (경부고속)</dd>
+          </dl>
+          <div class="okbox">💡 출발 전 트렁크에 <b>큰 수건 · 갈아입을 옷 · 비닐봉지</b>부터 실어두기. 흠뻑쇼 끝나고 젖은 채로 차 타면 시트 다 젖는다.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="head"><div class="time">10:50</div><div class="dot" style="background:#7b61c9"></div>
+        <div class="bd"><b>목천 도착 · 희주 픽업</b><p>천안 동남구 목천읍</p></div></div>
+        <div class="detail">
+          <dl>
+            <dt>대기</dt><dd>약 10분 (11:00 재출발)</dd>
+            <dt>남은거리</dt><dd>목천 → 대전 원도심 약 65km · 55~65분</dd>
+          </dl>
+          <div class="okbox">희주 짐도 젖을 옷/마른 옷 나눠 담았는지 확인. 흠뻑쇼는 <b>정말로 다 젖는다</b>.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="head"><div class="time">12:00</div><div class="dot" style="background:#f2803c"></div>
+        <div class="bd"><b>대전 도착 → 점심</b><p>오고야 (동구 자양동) — 희주가 먼저 "가자"고 한 곳</p></div></div>
+        <div class="detail">
+          <dl>
+            <dt>추천</dt><dd>오고야 — 숙성회·초밥</dd>
+            <dt>주소</dt><dd>대전 동구 백룡로11번길 148 1층</dd>
+            <dt>이유</dt><dd>대전역 방면이라 진입 동선에 자연스럽게 걸림. 흠뻑쇼 전에 든든하게.</dd>
+          </dl>
+          <div class="plc"><div class="pi">🍣</div><div class="pb">
+            <b>오고야</b><p>숙성회 · 초밥 — "한 점 한 점 풍미가 진하게"</p>
+            <div class="lnks">
+              <a href="https://map.naver.com/p/search/%EB%8C%80%EC%A0%84%20%EC%98%A4%EA%B3%A0%EC%95%BC" target="_blank">네이버 지도</a>
+              <a href="https://www.instagram.com/reel/DYvuSXKRpZy/" target="_blank">📸 릴스</a>
+            </div>
+          </div></div>
+          <div class="rct" style="margin-top:9px">희주 (5/26): <b>"초밥 머그러 가자 .."</b> — 1년치 DM에서 희주가 <b>먼저 가자고 한 유일한 대전 가게</b></div>
+          <div class="warnbox">일요일 휴무 여부 미확인 — 토요일 방문이라 문제없지만, 출발 전 네이버로 영업 확인 한 번.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="head"><div class="time">13:45</div><div class="dot" style="background:#12a5a0"></div>
+        <div class="bd"><b>카페 — 브리즈오브</b><p>대흥동 쫀득감자 · 숙소 도보권</p></div></div>
+        <div class="detail">
+          <dl>
+            <dt>주소</dt><dd>대전 중구 보문로262번길 31-2 (1~3층)</dd>
+            <dt>영업</dt><dd>11:00 – 21:00 · <b>월 휴무</b> (토요일 ✓)</dd>
+            <dt>메뉴</dt><dd>우리집쫀득감자 5,500원 (+소스 1개)</dd>
+          </dl>
+          <div class="okbox">숙소가 대흥동이라 <b>여기서 걸어서 체크인 가능</b>. 카페에서 시간 보내다 16시 딱 맞춰 들어가면 동선 손실 0.</div>
+          <div class="plc"><div class="pi">🥔</div><div class="pb">
+            <b>브리즈오브</b><p>강릉 길감자 스타일 쫀득감자 — 대흥동점</p>
+            <div class="lnks">
+              <a href="https://map.naver.com/p/search/%EB%8C%80%ED%9D%A5%EB%8F%99%20%EB%B8%8C%EB%A6%AC%EC%A6%88%EC%98%A4%EB%B8%8C" target="_blank">네이버 지도</a>
+              <a href="https://www.instagram.com/reel/DUGXoZgEzri/" target="_blank">📸 릴스</a>
+            </div>
+          </div></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="head"><div class="time">15:30</div><div class="dot" style="background:#12386b"></div>
+        <div class="bd"><b>대흥동 공영주차장 주차</b><p>⚠️ 숙소 주차 불가 — 차는 여기서 일요일까지</p></div></div>
+        <div class="detail">
+          <div class="warnbox">🚫 <b>숙소 건물 내 주차 절대 불가.</b> 호스트가 대흥동 공영주차장을 안내했다. 체크인 전에 차부터 넣어두고, 이후 일정은 전부 도보·택시로 움직이는 게 편하다.</div>
+          <dl>
+            <dt>주차</dt><dd>대흥동 공영주차장 (숙소 도보권)</dd>
+            <dt>기간</dt><dd>8/22 15:30 ~ 8/23 13:00 (약 21시간)</dd>
+            <dt>예상</dt><dd>1~1.5만원 내외 (요금 현장 확인)</dd>
+          </dl>
+          <div class="plc"><div class="pi">🅿️</div><div class="pb">
+            <b>대흥동 공영주차장</b><p>호스트 권장 주차장</p>
+            <div class="lnks"><a href="https://map.naver.com/p/search/%EB%8C%80%ED%9D%A5%EB%8F%99%20%EA%B3%B5%EC%98%81%EC%A3%BC%EC%B0%A8%EC%9E%A5" target="_blank">네이버 지도</a></div>
+          </div></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="head"><div class="time">16:00</div><div class="dot" style="background:#2f6fdd"></div>
+        <div class="bd"><b>체크인 — 스테이 와유</b><p>셀프 체크인 (키패드) · 대흥로165번길 36</p></div></div>
+        <div class="detail">
+          <dl>
+            <dt>체크인</dt><dd>16:00 ~ 21:00 · 셀프 (키패드)</dd>
+            <dt>주소</dt><dd>대전 중구 대흥로165번길 36</dd>
+            <dt>예약코드</dt><dd>에어비앤비 앱에서 확인</dd>
+          </dl>
+          <div class="warnbox">⛔ <b>얼리 체크인 불가</b> · 체크인 시간 이전 무단 입실 절대 불가. 16:00 전에 도착해도 못 들어간다.</div>
+          <div class="okbox">여기서 <b>젖어도 되는 옷으로 갈아입고</b>, 마른 옷·수건은 숙소에 두고 나간다. 공연장에 짐 최소로.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="head"><div class="time">16:30</div><div class="dot" style="background:#7b61c9"></div>
+        <div class="bd"><b>목원대로 이동 — 택시 권장</b><p>⚠️ 자차 금지. 약 9km · 20~30분</p></div></div>
+        <div class="detail">
+          <div class="warnbox">🚫 <b>차 가져가지 마.</b> 흠뻑쇼 공연장 주변은 극도로 혼잡해서 자차는 <b>공연 3시간 전 도착</b>이 권장된다. 체크인이 16시라 물리적으로 불가능하고, 끝나고 젖은 몸으로 주차장 빠져나오는 데만 1시간 넘게 걸린다. <b>택시가 정답.</b></div>
+          <dl>
+            <dt>출발</dt><dd>숙소 (대흥동) 16:30</dd>
+            <dt>도착</dt><dd>목원대 대운동장 · 대전 서구 도안북로 88</dd>
+            <dt>거리</dt><dd>약 9km · 평시 20분 / 공연일 25~35분</dd>
+            <dt>요금</dt><dd>약 12,000 ~ 16,000원</dd>
+          </dl>
+          <div class="okbox">💡 셔틀버스 운영 여부는 NOL티켓 공지에서 확인. 있으면 셔틀이 제일 싸고 안전하다.</div>
+          <div class="plc"><div class="pi">🎓</div><div class="pb">
+            <b>목원대학교 대운동장</b><p>대전 서구 도안북로 88 (도안동 800)</p>
+            <div class="lnks">
+              <a href="https://map.naver.com/p/search/%EB%AA%A9%EC%9B%90%EB%8C%80%ED%95%99%EA%B5%90%20%EB%8C%80%EC%9A%B4%EB%8F%99%EC%9E%A5" target="_blank">네이버 지도</a>
+              <a href="https://tickets.interpark.com/contents/notice/detail/14034" target="_blank">🎫 NOL 공지</a>
+            </div>
+          </div></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="head"><div class="time">17:00</div><div class="dot" style="background:#e05252"></div>
+        <div class="bd"><b>목원대 도착 · 입장 대기</b><p>굿즈 · 우비 · 물 확보 타임</p></div></div>
+        <div class="detail">
+          <dl>
+            <dt>여유</dt><dd>공연 1시간 전 — 입장 줄·굿즈·화장실</dd>
+            <dt>준비</dt><dd>우비, 방수팩(폰), 아쿠아슈즈/슬리퍼</dd>
+          </dl>
+          <div class="okbox">화장실은 공연 시작 직전이 제일 붐빈다. <b>17:30 전에</b> 미리 다녀오기.</div>
+          <div class="warnbox">📱 폰은 반드시 <b>지퍼백 or 방수팩</b>에. 8월 야외라 보조배터리도 방수 처리. 렌즈 끼면 물 맞을 때 눈 따가우니 안경이 나을 수도.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="head"><div class="time">18:00</div><div class="dot" style="background:#e05252"></div>
+        <div class="bd"><b>💦 싸이 흠뻑쇼 SUMMER SWAG 2026</b><p>대전 목원대 대운동장 · 전체관람가</p></div></div>
+        <div class="detail">
+          <dl>
+            <dt>공연</dt><dd>싸이흠뻑쇼 SUMMERSWAG2026 — 대전</dd>
+            <dt>일시</dt><dd>8/22 (토) 18:00 시작</dd>
+            <dt>장소</dt><dd>대전목원대학교 대운동장</dd>
+            <dt>예매</dt><dd>NOL 티켓 단독</dd>
+            <dt>종료</dt><dd>21:00 전후 예상</dd>
+          </dl>
+          <div class="okbox">🏁 대전이 <b>SUMMER SWAG 2026 투어의 피날레</b> 공연이다. 마지막 회차 특유의 텐션 기대해도 됨.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="head"><div class="time">21:15</div><div class="dot" style="background:#7b61c9"></div>
+        <div class="bd"><b>숙소 복귀</b><p>택시 대란 — 조금 걸어 나가서 잡기</p></div></div>
+        <div class="detail">
+          <div class="warnbox">🚕 공연 직후 공연장 앞은 택시가 안 잡힌다. <b>10분 정도 큰길 쪽으로 걸어 나가서</b> 호출하는 게 오히려 빠르다. 아니면 근처에서 30분 정도 시간 보내다 빠지는 것도 방법.</div>
+          <dl>
+            <dt>도착</dt><dd>22:00 전후</dd>
+            <dt>먼저</dt><dd>샤워 → 젖은 옷 정리 (비닐봉지 필수)</dd>
+          </dl>
+          <div class="okbox">숙소에 <b>샴푸·트리트먼트·바디워시·드라이기·고데기</b> 다 있음. 수건도 제공. 짐 줄여도 된다.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="head"><div class="time">22:40</div><div class="dot" style="background:#d9a441"></div>
+        <div class="bd"><b>야식 — 하쿠류코쿠류 본점 / 감자당 / 일광</b><p>셋 다 대흥동 · 숙소 도보 10분 안</p></div></div>
+        <div class="detail">
+          <div class="okbox">🎯 <b>하쿠류코쿠류 본점</b>이 1순위. 네가 DM에 두 번이나 보낸 곳인데 릴스는 봉명점(유성구)이라 못 가는 줄 알았다. 네이버 저장 목록 보니 <b>본점이 대흥로111번길 42 — 숙소 도보 10분</b>이다.</div>
+          <div class="plc"><div class="pi">🍣</div><div class="pb">
+            <b>하쿠류코쿠류 본점</b><p>대전 중구 대흥로111번길 42 · 도보 10분 — 참치·우니 이자카야</p>
+            <div class="lnks">
+              <a href="https://map.naver.com/p/search/%ED%95%98%EC%BF%A0%EB%A5%98%EC%BD%94%EC%BF%A0%EB%A5%98%20%EB%B3%B8%EC%A0%90" target="_blank">네이버 지도</a>
+              <a href="https://www.instagram.com/reel/DY4LoUNqtjU/" target="_blank">📸 릴스(봉명점)</a>
+            </div>
+          </div></div>
+          <div class="rct" style="margin-top:9px">희주: "헐 마싯겟다" — 내가 5/28, 6/2 두 번 보낸 곳</div>
+          <div class="warnbox" style="margin-top:9px">본점·봉명점 <b>메뉴가 다를 수 있다.</b> 릴스에서 본 천국도·특로스 가츠산도가 본점에도 있는지는 방문 전 확인.</div>
+          <div class="okbox">🥈 <b>감자당</b>은 네가 DM에서 <b>"대전가면묵자"</b>라고 직접 찍은 곳. 술 안 마실 거면 이쪽.</div>
+          <div class="plc"><div class="pi">🍗</div><div class="pb">
+            <b>감자당</b><p>대전 최초 감자치킨 — 꼬치 7,900 / 박스 21,900 · 옹볶이 조합 추천</p>
+            <div class="lnks">
+              <a href="https://map.naver.com/p/search/%EB%8C%80%EC%A0%84%20%EA%B0%90%EC%9E%90%EB%8B%B9" target="_blank">네이버 지도</a>
+              <a href="https://www.instagram.com/reel/DaXRY29TkDm/" target="_blank">📸 릴스</a>
+            </div>
+          </div></div>
+          <div class="plc"><div class="pi">🍶</div><div class="pb">
+            <b>일광</b><p>대흥동 술집 — 연어국수, 연어참치마끼, 꿈돌이 사케젤리 · 야구 중계</p>
+            <div class="lnks">
+              <a href="https://map.naver.com/p/search/%EB%8C%80%ED%9D%A5%EB%8F%99%20%EC%9D%BC%EA%B4%91" target="_blank">네이버 지도</a>
+              <a href="https://www.instagram.com/reel/DZOswpOhuiN/" target="_blank">📸 릴스</a>
+            </div>
+          </div></div>
+          <div class="warnbox">🌙 숙소 이용규칙에 <b>밤늦은 시간 소음 자제</b>가 명시돼 있다. 들어와서는 조용히.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ DAY 2 ============ -->
+<section class="tab" id="d2">
+
+  <div class="card wx" id="wx-d2"><div class="wico">⏳</div><div class="wmain"><b>날씨 불러오는 중…</b><p>8/23 (일) 대전</p></div></div>
+
+  <div class="card">
+    <h2><span class="em">🕐</span> Day 2 — 하루 흐름</h2>
+    <div class="cap">12시 체크아웃 · 빵 사서 귀가 — 여유롭게</div>
+    <div class="donutWrap" id="chart-d2"></div>
+  </div>
+
+  <div class="card">
+    <h2><span class="em">📍</span> Day 2 타임라인</h2>
+    <div class="cap">일요일은 확정 일정이 없어서 <b>느슨하게</b> 짰어 — 원도심 도보권만으로 구성</div>
+    <div class="tl">
+
+      <div class="row">
+        <div class="head"><div class="time">09:00</div><div class="dot" style="background:#37a6e0"></div>
+        <div class="bd"><b>기상 · 짐 정리</b><p>체크아웃 12:00 — 연장 불가</p></div></div>
+        <div class="detail">
+          <div class="warnbox">⛔ <b>레이트 체크아웃 불가.</b> 12:00 칼같이 나가야 한다. 11:30까지 짐 다 싸두기.</div>
+          <div class="okbox">음식물 쓰레기는 비닐에 담아 싱크대에, 재활용은 건물 뒷편 주차장에 분리수거. 호스트 요청사항이다.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="head"><div class="time">10:00</div><div class="dot" style="background:#f2803c"></div>
+        <div class="bd"><b>아침 겸 해장</b><p>전날 술 마셨으면 국물, 아니면 마라</p></div></div>
+        <div class="detail">
+          <div class="plc"><div class="pi">🌶️</div><div class="pb">
+            <b>마라인더컵 은행점</b><p>마라꼬치·마라탕 — 대전 중구 중앙로164번길 26 1층 · 도보권</p>
+            <div class="lnks">
+              <a href="https://map.naver.com/p/search/%EB%A7%88%EB%9D%BC%EC%9D%B8%EB%8D%94%EC%BB%B5%20%EC%9D%80%ED%96%89%EC%A0%90" target="_blank">네이버 지도</a>
+              <a href="https://www.instagram.com/reel/Db5XNHVMb1V/" target="_blank">📸 릴스</a>
+            </div>
+          </div></div>
+          <div class="rct">나 (8/12): <b>"저거올영 먹어보자 난한입먹을겡"</b> / <b>"또먹고싶어 … 마라꼬차"</b></div>
+          <div class="warnbox">일요일 오전 영업 시작 시간 확인 필요. 안 열었으면 성심당 먼저 가고 순서 바꾸면 된다.</div>
+          <div class="okbox">🍜 <b>전날 술 마셨으면 칼국수로.</b> 네이버 저장 목록에 <b>대추나무칼국수</b>(도보 11분)·<b>고향칼국수</b>(도보 13분)가 있다. 대전은 칼국수도 유명하니 해장엔 이쪽이 정답일 수도.</div>
+          <div class="plc"><div class="pi">🍜</div><div class="pb">
+            <b>대추나무칼국수</b><p>대전 중구 목척9길 30 · 도보 11분 — 내 저장 목록</p>
+            <div class="lnks"><a href="https://map.naver.com/p/search/%EB%8C%80%EC%B6%94%EB%82%98%EB%AC%B4%EC%B9%BC%EA%B5%AD%EC%88%98" target="_blank">네이버 지도</a></div>
+          </div></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="head"><div class="time">11:00</div><div class="dot" style="background:#d9a441"></div>
+        <div class="bd"><b>성심당 본점</b><p>숙소에서 도보 5분 — 은행동 번화가</p></div></div>
+        <div class="detail">
+          <dl>
+            <dt>거리</dt><dd>숙소 도보 5분 (호스트 안내)</dd>
+            <dt>노림수</dt><dd>초코바게트 · 튀김소보로 · 명란바게트</dd>
+          </dl>
+          <div class="rct">나 (3/16): <b>"초코바게트 또먹고시퍼?"</b> → 희주: <b>"마싯어 보여"</b></div>
+          <div class="warnbox">🥐 일요일 오전 성심당은 <b>웨이팅이 길다.</b> 체크아웃 전에 미리 다녀오는 게 안전. 인기 품목은 오전에 소진되기도 함.</div>
+          <div class="plc"><div class="pi">🍫</div><div class="pb">
+            <b>성심당 본점</b><p>은행동 번화가 · 도보 5분</p>
+            <div class="lnks">
+              <a href="https://map.naver.com/p/search/%EC%84%B1%EC%8B%AC%EB%8B%B9%20%EB%B3%B8%EC%A0%90" target="_blank">네이버 지도</a>
+              <a href="https://www.instagram.com/reel/DV5wxVaD9O5/" target="_blank">📸 릴스</a>
+            </div>
+          </div></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="head"><div class="time">12:00</div><div class="dot" style="background:#2f6fdd"></div>
+        <div class="bd"><b>체크아웃</b><p>키패드 · 별도 반납 없음</p></div></div>
+        <div class="detail">
+          <dl><dt>시각</dt><dd>12:00 이전 (연장 불가)</dd></dl>
+          <div class="okbox">짐은 차(대흥동 공영주차장)에 옮겨두고, 남은 일정은 가볍게 도보로.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="head"><div class="time">12:30</div><div class="dot" style="background:#12a5a0"></div>
+        <div class="bd"><b>로로네베이커리 — 빵 픽업</b><p>성심당에서 도보 10분 · 페스츄리 맛집</p></div></div>
+        <div class="detail">
+          <dl>
+            <dt>주소</dt><dd>대전 중구 중교로 30 승촌빌딩 1층</dd>
+            <dt>영업</dt><dd>평일 09:00–19:30 / <b>주말 10:00–19:00</b></dd>
+          </dl>
+          <div class="rct">희주 (6/20): <b>"대전빵지순례 필수코스 기억해.. 진짜 바삭함 레전드"</b></div>
+          <div class="warnbox">늦게 가면 없다고 캡션에 적혀 있음. 성심당 다음 바로가 맞다.</div>
+          <div class="plc"><div class="pi">🥐</div><div class="pb">
+            <b>로로네베이커리</b><p>페스츄리 · 대전 빵지순례 코스</p>
+            <div class="lnks">
+              <a href="https://map.naver.com/p/search/%EB%A1%9C%EB%A1%9C%EB%84%A4%EB%B2%A0%EC%9D%B4%EC%BB%A4%EB%A6%AC" target="_blank">네이버 지도</a>
+              <a href="https://www.instagram.com/reel/DZxHziFNc0S/" target="_blank">📸 릴스</a>
+            </div>
+          </div></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="head"><div class="time">13:00</div><div class="dot" style="background:#7b61c9"></div>
+        <div class="bd"><b>출발 · 귀가</b><p>대전 → 목천 (희주 하차) → 오산</p></div></div>
+        <div class="detail">
+          <dl>
+            <dt>대전→목천</dt><dd>약 65km · 55~65분 → 14:10 도착</dd>
+            <dt>목천→오산</dt><dd>약 55km · 45~55분 → 15:15 도착</dd>
+          </dl>
+          <div class="okbox">일요일 오후 상행선은 막힌다. 13시 출발이면 정체 피크(15~19시) 앞이라 괜찮은 편.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="em">➕</span> 시간 남으면</h2>
+    <div class="cap">일요일 일정이 비어 있으니, 아래 중 하나 끼워도 됨</div>
+    <div class="plc"><div class="pi">🧸</div><div class="pb">
+      <b>미니소 대전신세계 Art&amp;Science점</b><p>유성구 엑스포로 1, 7층 · 10:30–20:00 — 치이카와·산리오·팝마트</p>
+      <div class="lnks">
+        <a href="https://map.naver.com/p/search/%EB%8C%80%EC%A0%84%EC%8B%A0%EC%84%B8%EA%B3%84%20%EC%95%84%ED%8A%B8%EC%95%A4%EC%82%AC%EC%9D%B4%EC%96%B8%EC%8A%A4" target="_blank">네이버 지도</a>
+        <a href="https://www.instagram.com/reel/DZ1TAClROTY/" target="_blank">📸 릴스</a>
+      </div>
+    </div></div>
+    <div class="plc"><div class="pi">🍪</div><div class="pb">
+      <b>몽심</b><p>대전 구움과자 — 밀키연유/레몬 마들렌 2,500 · 하우스초콜릿 3,000</p>
+      <div class="lnks">
+        <a href="https://map.naver.com/p/search/%EB%8C%80%EC%A0%84%20%EB%AA%BD%EC%8B%AC" target="_blank">네이버 지도</a>
+        <a href="https://www.instagram.com/reel/Db72qIuu_zS/" target="_blank">📸 릴스</a>
+      </div>
+    </div></div>
+    <div class="warnbox">미니소는 유성구라 <b>차로 20분</b> — 귀가 방향(북쪽)과 반대다. 갈 거면 체크아웃 후 바로 가고 성심당은 그 전에.</div>
+  </div>
+</section>
+
+<!-- ============ 정보 ============ -->
+<section class="tab" id="info">
+
+  <div class="card">
+    <h2><span class="em">🎤</span> 흠뻑쇼</h2>
+    <div class="cap">이번 여행의 메인</div>
+    <dl class="kv2" style="grid-template-columns:66px 1fr">
+      <dt>공연</dt><dd>싸이흠뻑쇼 SUMMERSWAG2026 — 대전</dd>
+      <dt>일시</dt><dd>2026.08.22(토) · <b>18:00</b></dd>
+      <dt>장소</dt><dd>대전목원대학교 대운동장<br>대전 서구 도안북로 88</dd>
+      <dt>등급</dt><dd>전체관람가</dd>
+      <dt>예매</dt><dd>NOL 티켓 단독</dd>
+    </dl>
+    <div class="warnbox">🚗 공연장 주변 <b>극도로 혼잡</b>. 자차는 공연 3시간 전 도착 권장 → 체크인 16시와 충돌하니 <b>택시/셔틀 이용이 사실상 유일한 답</b>이다.</div>
+    <a class="blk" href="https://tickets.interpark.com/contents/notice/detail/14034" target="_blank">🎫 NOL 티켓 공지 확인 (셔틀·입장 안내)</a>
+  </div>
+
+  <div class="card">
+    <h2><span class="em">🏠</span> 숙소 — 스테이 와유(臥遊)</h2>
+    <div class="cap">에어비앤비 · 호스트 리나</div>
+    <dl class="kv2" style="grid-template-columns:74px 1fr">
+      <dt>주소</dt><dd>대전 중구 대흥로165번길 36 (34926)</dd>
+      <dt>체크인</dt><dd>8/22(토) <b>16:00 ~ 21:00</b> · 셀프(키패드)</dd>
+      <dt>체크아웃</dt><dd>8/23(일) <b>12:00 이전</b></dd>
+      <dt>인원</dt><dd>게스트 2명 (정원 3명)</dd>
+      <dt>침구</dt><dd>더블침대 1 + 접이식 싱글매트 1 (옷장 안)</dd>
+      <dt>예약코드</dt><dd>에어비앤비 앱에서 확인</dd>
+      <dt>환불</dt><dd><b>환불 불가</b></dd>
+      <dt>허가</dt><dd>생활숙박업 29호 (대전 중구)</dd>
+    </dl>
+
+    <div class="warnbox">
+      🚫 <b>주차 불가</b> — 건물 내 주차공간 없음. 대흥동 공영주차장 이용 권장<br>
+      🚫 <b>얼리 체크인 · 레이트 체크아웃 불가</b> (사전 문의 시 당일 상황에 따라 가능)<br>
+      🚫 등록 인원 외 숙박 시 즉시 퇴실 · 환불 불가<br>
+      🌙 밤늦은 시간 소음 자제
+    </div>
+
+    <div class="okbox">
+      <b>도보 거리</b> — 성심당(은행동 번화가) 5분 · 중구청역 5분 · 중앙로역 5분 · 대전역 도보 15분/차 5분 · 한화이글스파크 차 5분<br>
+      <b>어메니티</b> — 일회용 칫솔·치약·비누·샤워타월, 샴푸·트리트먼트·바디워시, 고데기, 드라이기<br>
+      <b>주방</b> — 접시·수저·컵(싱크대 상부) / 프라이팬·냄비(하부). 냄새 심한 고기·생선 조리 불가
+    </div>
+    <div class="plc" style="margin-top:10px"><div class="pi">🏠</div><div class="pb">
+      <b>스테이 와유</b><p>대흥로165번길 36</p>
+      <div class="lnks"><a href="https://map.naver.com/p/search/%EB%8C%80%EC%A0%84%20%EC%A4%91%EA%B5%AC%20%EB%8C%80%ED%9D%A5%EB%A1%9C165%EB%B2%88%EA%B8%B8%2036" target="_blank">네이버 지도</a></div>
+    </div></div>
+  </div>
+
+  <div class="card">
+    <h2><span class="em">🚗</span> 차 · 주차</h2>
+    <div class="cap">자차 · 왕복 약 280km</div>
+    <dl class="kv2" style="grid-template-columns:74px 1fr">
+      <dt>출발</dt><dd>오산 자택 · 8/22 10:00</dd>
+      <dt>경유</dt><dd>목천 (희주 픽업) · 10:50</dd>
+      <dt>도착</dt><dd>대전 원도심 · 12:00</dd>
+      <dt>주차</dt><dd>대흥동 공영주차장 (숙소 주차 불가)</dd>
+      <dt>귀가</dt><dd>8/23 13:00 출발 → 목천 → 오산 15:15</dd>
+    </dl>
+    <div class="okbox">💡 차는 <b>토요일 15:30에 넣고 일요일 13:00에 뺀다.</b> 그 사이 흠뻑쇼는 택시. 원도심 일정이 전부 도보권이라 차 쓸 일이 없다.</div>
+  </div>
+
+  <div class="card">
+    <h2><span class="em">🎒</span> 흠뻑쇼 준비물</h2>
+    <div class="cap">이번 여행 성패는 여기서 갈린다</div>
+    <ul class="chk">
+      <li><i>🧥</i><div><b>우비 / 레인코트</b> — 현장 판매도 있지만 비싸고 줄 김</div></li>
+      <li><i>📱</i><div><b>방수팩 · 지퍼백</b> — 폰, 보조배터리, 지갑, 티켓</div></li>
+      <li><i>👕</i><div><b>갈아입을 옷 전체</b> — 속옷까지. 숙소에 두고 감</div></li>
+      <li><i>🩴</i><div><b>아쿠아슈즈 / 슬리퍼</b> — 운동화는 젖으면 최악</div></li>
+      <li><i>🧻</i><div><b>큰 수건 2장</b> — 1장은 차 시트용으로 트렁크에</div></li>
+      <li><i>🛍️</i><div><b>비닐봉지 여러 장</b> — 젖은 옷 담을 용도</div></li>
+      <li><i>👓</i><div><b>안경</b> — 렌즈는 물 맞으면 눈 따가움</div></li>
+      <li><i>💧</i><div><b>물 · 전해질 음료</b> — 8월 야외 3시간, 탈수 주의</div></li>
+      <li><i>🎫</i><div><b>티켓 / 예매 확인</b> — NOL 앱 미리 로그인 해두기</div></li>
+    </ul>
+  </div>
+
+  <div class="card bgt">
+    <h2><span class="em">💰</span> 예산</h2>
+    <div class="cap">2인 기준 · 티켓·숙소는 이미 결제됨(별도)</div>
+    <div class="bi"><span>주유 + 톨비 (왕복 280km)</span><span>약 60,000</span></div>
+    <div class="bi"><span>주차 (대흥동 공영, 약 21h)</span><span>10,000~15,000</span></div>
+    <div class="bi"><span>택시 왕복 (숙소↔목원대)</span><span>25,000~35,000</span></div>
+    <div class="bi"><span>Day1 점심 — 오고야</span><span>40,000~60,000</span></div>
+    <div class="bi"><span>Day1 카페 — 브리즈오브</span><span>15,000~20,000</span></div>
+    <div class="bi"><span>흠뻑쇼 현장 (우비·물·먹거리)</span><span>20,000~35,000</span></div>
+    <div class="bi"><span>Day1 야식 — 감자당/일광</span><span>30,000~55,000</span></div>
+    <div class="bi"><span>Day2 아침 — 마라인더컵</span><span>20,000~30,000</span></div>
+    <div class="bi"><span>Day2 빵 (성심당 + 로로네)</span><span>30,000~50,000</span></div>
+    <div class="tot"><span>현장 지출 합계</span><span>250,000~360,000</span></div>
+    <div class="okbox" style="margin-top:12px">🎫 <b>이미 결제</b> — 흠뻑쇼 티켓 2매 (R석 기준 약 35만) · 에어비앤비 숙박비. 위 합계에는 미포함.</div>
+
+    <div class="bars" style="margin-top:16px">
+      <div class="brow"><div class="blab"><span>먹는 데</span><b>13~19.5만</b></div>
+        <div class="btrack"><div class="bfill" style="width:78%;background:linear-gradient(90deg,#f2803c,#d9a441)"></div></div></div>
+      <div class="brow"><div class="blab"><span>이동·주차</span><b>9.5~11만</b></div>
+        <div class="btrack"><div class="bfill" style="width:44%;background:linear-gradient(90deg,#2f6fdd,#37a6e0)"></div></div></div>
+      <div class="brow"><div class="blab"><span>공연 현장</span><b>2~3.5만</b></div>
+        <div class="btrack"><div class="bfill" style="width:15%;background:linear-gradient(90deg,#e05252,#7b61c9)"></div></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span class="em">⚠️</span> 놓치기 쉬운 것</h2>
+    <ul class="chk">
+      <li><i>1</i><div><b>얼리 체크인 안 된다</b> — 16시 전엔 짐도 못 둔다. 필요하면 <b>미리 호스트에게 메시지</b>로 문의 (당일 상황 따라 가능)</div></li>
+      <li><i>2</i><div><b>숙소 주차 불가</b> — 도착하자마자 공영주차장부터</div></li>
+      <li><i>3</i><div><b>목원대 자차 금지</b> — 3시간 전 도착 권장 = 체크인과 충돌</div></li>
+      <li><i>4</i><div><b>초초(갈마동 술집)는 일요일 휴무</b> — 이번 일정엔 못 감</div></li>
+      <li><i>5</i><div><b>브리즈오브는 월요일 휴무</b> — 토/일은 정상 영업 ✓</div></li>
+      <li><i>6</i><div><b>레이트 체크아웃 불가</b> — 일요일 12시 칼퇴실</div></li>
+      <li><i>7</i><div><b>숙소 환불 불가</b> — 일정 변경 여지 없음</div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 추천 ============ -->
+<section class="tab" id="pick">
+  <div class="card">
+    <h2><span class="em">⭐</span> 왜 이 조합인가</h2>
+    <div class="cap">희주와 1년치 DM에서 뽑은 대전 25곳 중, 동선에 맞는 것만</div>
+    <div class="okbox">숙소가 <b>대흥동</b>이라 DM에 나온 원도심 8곳이 전부 도보권에 들어온다. 유성·서구 쪽(하쿠류코쿠류, 손수베이커리, 황제닭발 등)은 차로 20분 이상이라 이번 1박2일엔 무리 — <b>다음에</b>.</div>
+  </div>
+
+  <div class="card">
+    <h2><span class="em">🥇</span> 1순위 — 실제로 "가자"고 한 곳</h2>
+    <div class="cap">DM에서 둘 중 하나가 명시적으로 찍은 곳</div>
+    <div class="plc"><div class="pi">🍣</div><div class="pb">
+      <b>오고야</b> <span style="font-size:10.5px;color:#12a5a0;font-weight:800">Day1 점심</span>
+      <p>동구 백룡로11번길 148 — 숙성회·초밥</p>
+      <div class="lnks"><a href="https://map.naver.com/p/search/%EB%8C%80%EC%A0%84%20%EC%98%A4%EA%B3%A0%EC%95%BC" target="_blank">지도</a><a href="https://www.instagram.com/reel/DYvuSXKRpZy/" target="_blank">📸</a></div>
+    </div></div>
+    <div class="rct">희주: "초밥 머그러 가자 .." — 희주가 <b>먼저</b> 가자고 한 유일한 곳</div>
+
+    <div class="plc" style="margin-top:12px"><div class="pi">🍗</div><div class="pb">
+      <b>감자당</b> <span style="font-size:10.5px;color:#d9a441;font-weight:800">Day1 야식</span>
+      <p>대흥동·은행동 — 대전 최초 감자치킨 · 도보권</p>
+      <div class="lnks"><a href="https://map.naver.com/p/search/%EB%8C%80%EC%A0%84%20%EA%B0%90%EC%9E%90%EB%8B%B9" target="_blank">지도</a><a href="https://www.instagram.com/reel/DaXRY29TkDm/" target="_blank">📸</a></div>
+    </div></div>
+    <div class="rct">나: <b>"대전가면묵자"</b> (7/22)</div>
+
+    <div class="plc" style="margin-top:12px"><div class="pi">🌶️</div><div class="pb">
+      <b>마라인더컵 은행점</b> <span style="font-size:10.5px;color:#f2803c;font-weight:800">Day2 아침</span>
+      <p>중구 중앙로164번길 26 — 마라꼬치 · 도보권</p>
+      <div class="lnks"><a href="https://map.naver.com/p/search/%EB%A7%88%EB%9D%BC%EC%9D%B8%EB%8D%94%EC%BB%B5%20%EC%9D%80%ED%96%89%EC%A0%90" target="_blank">지도</a><a href="https://www.instagram.com/reel/Db5XNHVMb1V/" target="_blank">📸</a></div>
+    </div></div>
+    <div class="rct">나: "또먹고싶어 … 마라꼬차" (8/12)</div>
+  </div>
+
+  <div class="card">
+    <h2><span class="em">🍞</span> 빵 라인 — 대전은 빵이다</h2>
+    <div class="cap">DM 25곳 중 베이커리·디저트만 7곳. 도보권 3곳만 추림</div>
+    <div class="plc"><div class="pi">🍫</div><div class="pb">
+      <b>성심당 본점</b><p>도보 5분 — 초코바게트 · 튀김소보로</p>
+      <div class="lnks"><a href="https://map.naver.com/p/search/%EC%84%B1%EC%8B%AC%EB%8B%B9%20%EB%B3%B8%EC%A0%90" target="_blank">지도</a><a href="https://www.instagram.com/reel/DV5wxVaD9O5/" target="_blank">📸</a></div>
+    </div></div>
+    <div class="plc"><div class="pi">🥐</div><div class="pb">
+      <b>로로네베이커리</b><p>중교로 30 · 주말 10:00–19:00 — 페스츄리</p>
+      <div class="lnks"><a href="https://map.naver.com/p/search/%EB%A1%9C%EB%A1%9C%EB%84%A4%EB%B2%A0%EC%9D%B4%EC%BB%A4%EB%A6%AC" target="_blank">지도</a><a href="https://www.instagram.com/reel/DZxHziFNc0S/" target="_blank">📸</a></div>
+    </div></div>
+    <div class="plc"><div class="pi">🥭</div><div class="pb">
+      <b>성심당 DCC점</b><p>초코망고샌드 한정 — 본점과 다른 메뉴</p>
+      <div class="lnks"><a href="https://map.naver.com/p/search/%EC%84%B1%EC%8B%AC%EB%8B%B9%20DCC%EC%A0%90" target="_blank">지도</a><a href="https://www.instagram.com/reel/DYl6lnaSQ-q/" target="_blank">📸</a></div>
+    </div></div>
+    <div class="warnbox">DCC점은 컨벤션센터 쪽(유성 방면)이라 도보권 아님. 미니소 갈 때 묶으면 동선이 맞는다.</div>
+  </div>
+
+  <div class="card">
+    <h2><span class="em">😢</span> 아쉽지만 패스</h2>
+    <div class="cap">DM엔 있는데 이번엔 못 가는 것들</div>
+    <ul class="chk">
+      <li><i>🌸</i><div><b>초초</b> (갈마동 술집) — <b>일요일 휴무</b> + 서구라 멀다</div></li>
+      <li><i>✅</i><div><b>하쿠류코쿠류</b> — <s style="color:#aab3c5">유성구라 포기</s> → <b style="color:#12a5a0">본점이 대흥동에 있어서 살아남</b>. Day1 야식으로 편성됨</div></li>
+      <li><i>🥯</i><div><b>손수베이커리</b> (관저동 맘모스빵) — 희주가 두 번 보냄. 서구 끝이라 왕복 1시간</div></li>
+      <li><i>🍖</i><div><b>황제닭발숯불꼼장어</b> (탄방동) — "미쳣다여기" 했지만 서구</div></li>
+      <li><i>🥘</i><div><b>광주서울곱창 대전봉명점</b> — "대전가서 맛난거많이먹자" 대상이지만 유성구</div></li>
+      <li><i>⌨️</i><div><b>대전 키보드 팝업</b> — 6월 팝업이라 <b>이미 종료</b> 추정</div></li>
+    </ul>
+    <div class="okbox">위 5곳은 전부 <b>유성구·서구</b>에 몰려 있다. 다음에 대전 오면 <b>서구·유성 하루</b>로 따로 묶는 게 낫다.</div>
+  </div>
+</section>
+
+<!-- ============ 저장 목록 ============ -->
+<section class="tab" id="save">
+  <div class="card">
+    <h2><span class="em">🔖</span> 네이버 저장 — "대전 음식점"</h2>
+    <div class="cap">내가 직접 저장해둔 14곳 · 숙소(대흥로165번길 36)에서 가까운 순</div>
+    <div class="okbox"><b>9곳이 숙소 도보 20분 안</b>에 있다. 저장 목록이 원도심에 쏠려 있어서 이번 숙소랑 거의 완벽하게 맞는다.</div>
+    <a class="blk" href="https://naver.me/F6QOtehE" target="_blank">🔗 네이버 지도에서 원본 목록 열기</a>
+  </div>
+  <div class="card">
+    <h2><span class="em">🚶</span> 도보권</h2>
+    <div class="cap">차 안 빼도 되는 거리 — 흠뻑쇼 전후로 넣기 좋음</div>
+    <div id="nvWalk"></div>
+  </div>
+  <div class="card">
+    <h2><span class="em">🚗</span> 차 타야 하는 곳</h2>
+    <div class="cap">이번 1박2일 동선엔 안 맞음 — 다음 방문용</div>
+    <div id="nvDrive"></div>
+  </div>
+</section>
+
+<!-- ============ 인스타 ============ -->
+<section class="tab" id="insta">
+  <div class="card">
+    <h2><span class="em">📸</span> 인스타 DM 아카이브</h2>
+    <div class="cap">희주와 주고받은 릴스 중 대전 관련만 · 보낸사람 → 지역 → 테마 순으로 필터</div>
+    <div class="igseg">
+      <button class="on" data-by="all">전체</button>
+      <button data-by="hj">희주</button>
+      <button data-by="me">나</button>
+    </div>
+    <div class="locs" id="locs"></div>
+    <div id="iglist"></div>
+    <div class="igcnt" id="igcnt"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  대전 흠뻑쇼 여행 · 2026.08.22–23<br>
+  인스타 DM 4,835개 · 릴스 1,423개에서 추린 대전 25곳 + 네이버 저장 14곳<br>
+  <span style="opacity:.7">※ 영업시간·휴무는 방문 전 재확인</span>
+</footer>
+
+<script>
+/* ---------- 탭 ---------- */
+document.querySelectorAll('nav button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('section.tab').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    document.getElementById(b.dataset.t).classList.add('on');
+    window.scrollTo({top:0});
+    applyWxTheme(b.dataset.t);
+  });
+});
+
+/* ---------- 아코디언 ---------- */
+document.querySelectorAll('.tl .head').forEach(h=>{
+  h.addEventListener('click',e=>{
+    if(e.target.closest('a')) return;
+    h.parentElement.classList.toggle('open');
+  });
+});
+
+/* ---------- 날씨 ---------- */
+const WX_DAYS={d1:{date:'2026-08-22',label:'8/22 (토)'}, d2:{date:'2026-08-23',label:'8/23 (일)'}};
+const wxKindByDay={};
+function wxKind(c){ if(c===0)return'clear'; if(c<=2)return'partly'; if(c===3)return'cloud';
+  if(c===45||c===48)return'fog'; if(c>=95)return'storm';
+  if((c>=51&&c<=67)||(c>=80&&c<=82)||(c>=71&&c<=86))return'rain'; return'cloud'; }
+const WX_META={clear:{ico:'☀️',name:'맑음'},cloud:{ico:'☁️',name:'흐림'},
+  rain:{ico:'🌧️',name:'비'},storm:{ico:'⛈️',name:'뇌우'},partly:{ico:'🌤️',name:'구름 조금'},fog:{ico:'🌫️',name:'안개'}};
+const WX_TIP={
+  clear:{d1:'야외 3시간 — 물 넉넉히, 선크림 필수',d2:'귀갓길 쾌적'},
+  partly:{d1:'공연 보기 딱 좋은 날씨',d2:'빵지순례 하기 좋음'},
+  cloud:{d1:'덥지 않아 오히려 다행',d2:'무난'},
+  rain:{d1:'어차피 젖는 공연 — 다만 우천 시 진행 여부 NOL 공지 확인',d2:'우산 챙기기'},
+  storm:{d1:'⚠️ 뇌우 — 공연 취소·지연 가능. NOL 공지 꼭 확인',d2:'이동 시 주의'},
+  fog:{d1:'운전 시 시야 주의',d2:'상행선 안개 주의'}
+};
+function applyWxTheme(tab){ document.body.className = wxKindByDay[tab] ? 'th-'+wxKindByDay[tab] : ''; }
+(function(){
+  const u='https://api.open-meteo.com/v1/forecast?latitude=36.3504&longitude=127.3845'
+    +'&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max'
+    +'&timezone=Asia%2FSeoul&start_date=2026-08-22&end_date=2026-08-23';
+  fetch(u).then(r=>{if(!r.ok)throw 0;return r.json();}).then(j=>{
+    const t=j.daily;
+    Object.entries(WX_DAYS).forEach(([id,info])=>{
+      const i=t.time.indexOf(info.date); if(i<0)return;
+      const k=wxKind(t.weather_code[i]); wxKindByDay[id]=k;
+      const m=WX_META[k], el=document.getElementById('wx-'+id); if(!el)return;
+      el.innerHTML='<div class="wico">'+m.ico+'</div>'
+        +'<div class="wmain"><b>'+m.name+' · '+info.label+' 대전</b>'
+        +'<p>강수확률 '+(t.precipitation_probability_max[i]??'-')+'% · '+(WX_TIP[k]?WX_TIP[k][id]:'')+'</p></div>'
+        +'<div class="wtemp"><div class="hi">'+Math.round(t.temperature_2m_max[i])+'°</div>'
+        +'<div class="lo">'+Math.round(t.temperature_2m_min[i])+'°</div></div>';
+    });
+    const cur=document.querySelector('nav button.on'); if(cur)applyWxTheme(cur.dataset.t);
+  }).catch(()=>{
+    ['d1','d2'].forEach(id=>{
+      const el=document.getElementById('wx-'+id); if(!el)return;
+      el.innerHTML='<div class="wico">🌡️</div><div class="wmain"><b>날씨를 못 불러왔어요</b>'
+        +'<p><a href="https://search.naver.com/search.naver?query=대전+날씨" target="_blank">네이버 날씨에서 보기 →</a></p></div>';
+    });
+  });
+})();
+
+/* ---------- 24시간 원형 차트 ---------- */
+const DAYS={
+ 'chart-d1':[
+   {s:10,   e:12,   label:'이동 · 목천 픽업', c:'#7b61c9'},
+   {s:12,   e:13.5, label:'점심 · 오고야',    c:'#f2803c'},
+   {s:13.75,e:15.5, label:'카페 · 브리즈오브', c:'#12a5a0'},
+   {s:15.5, e:16.5, label:'주차 · 체크인',    c:'#2f6fdd'},
+   {s:16.5, e:18,   label:'목원대 이동 · 입장',c:'#37a6e0'},
+   {s:18,   e:21,   label:'💦 흠뻑쇼',        c:'#e05252'},
+   {s:21.25,e:22.5, label:'복귀 · 샤워',      c:'#12386b'},
+   {s:22.67,e:24,   label:'야식 · 감자당',    c:'#d9a441'}
+ ],
+ 'chart-d2':[
+   {s:0,   e:9,    label:'취침',            c:'#2b3a55'},
+   {s:9,   e:10,   label:'기상 · 짐 정리',   c:'#37a6e0'},
+   {s:10,  e:11,   label:'아침 · 마라인더컵', c:'#f2803c'},
+   {s:11,  e:12,   label:'성심당 · 체크아웃', c:'#d9a441'},
+   {s:12,  e:13,   label:'로로네 빵 픽업',   c:'#12a5a0'},
+   {s:13,  e:15.25,label:'귀가 · 오산',      c:'#7b61c9'}
+ ]
+};
+function polar(cx,cy,r,h){const a=(h/24)*2*Math.PI-Math.PI/2;return[cx+r*Math.cos(a),cy+r*Math.sin(a)];}
+function arc(cx,cy,r,h0,h1){const[x0,y0]=polar(cx,cy,r,h0),[x1,y1]=polar(cx,cy,r,h1);
+  return 'M '+x0+' '+y0+' A '+r+' '+r+' 0 '+((h1-h0)>12?1:0)+' 1 '+x1+' '+y1;}
+function fmtH(h){const H=Math.floor(h)%24,M=Math.round((h-Math.floor(h))*60);
+  return String(H).padStart(2,'0')+':'+String(M).padStart(2,'0');}
+Object.entries(DAYS).forEach(([id,segs])=>{
+  const wrap=document.getElementById(id); if(!wrap)return;
+  const cx=110,cy=110,r=84;
+  let s='<svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">';
+  s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="#edf0f6" stroke-width="26"/>';
+  segs.forEach(g=>{ s+='<path d="'+arc(cx,cy,r,g.s,Math.min(g.e,24))+'" fill="none" stroke="'+g.c
+    +'" stroke-width="26" stroke-linecap="butt"/>'; });
+  [0,6,12,18].forEach(h=>{
+    const [x1,y1]=polar(cx,cy,r-15,h), [x2,y2]=polar(cx,cy,r+15,h);
+    s+='<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="#fff" stroke-width="2"/>';
+    const [tx,ty]=polar(cx,cy,r-26,h);
+    s+='<text x="'+tx+'" y="'+(ty+4)+'" text-anchor="middle" font-size="10" fill="#9aa4b8" font-weight="700">'+h+'</text>';
+  });
+  const main=segs.reduce((a,b)=>(b.e-b.s)>(a.e-a.s)&&b.label!=='취침'?b:a, segs[0]);
+  s+='<text x="'+cx+'" y="'+(cy-2)+'" text-anchor="middle" font-size="13" font-weight="800" fill="#1c2333">'+main.label.replace(/^💦\s*/,'')+'</text>';
+  s+='<text x="'+cx+'" y="'+(cy+15)+'" text-anchor="middle" font-size="10.5" fill="#6b7487">'+fmtH(main.s)+'–'+fmtH(main.e)+'</text>';
+  s+='</svg>';
+  let lg='<div class="lgd">';
+  segs.forEach(g=>{ lg+='<div><i style="background:'+g.c+'"></i><span><b>'+fmtH(g.s)+'</b> '+g.label+'</span></div>'; });
+  lg+='</div>';
+  wrap.innerHTML=s+lg;
+});
+
+/* ---------- 네이버 저장 목록 ---------- */
+const NV_DATA=[
+ {n:'옥천뼈구이농민뜨끈이 본점',c:'음식점',ic:'🍖',a:'대전 중구 대흥로 161',m:4,
+  note:'숙소 바로 앞. 건물이 거의 붙어 있다'},
+ {n:'카라멜',c:'음식점',ic:'🍮',a:'대전 중구 대종로 476',m:331,note:'성심당 가는 길목'},
+ {n:'성심당 본점',c:'카페',ic:'🍫',a:'대전 중구 대종로480번길 15',m:357,
+  note:'Day2 일정에 이미 포함 · 호스트 안내 "도보 5분"과 일치'},
+ {n:'하쿠류코쿠류 본점',c:'음식점',ic:'🍣',a:'대전 중구 대흥로111번길 42',m:522,
+  note:'★ DM에서 내가 두 번 보낸 그 집의 본점! 릴스는 봉명점(유성구)이었는데 본점이 도보권'},
+ {n:'아리랑주막',c:'술집',ic:'🍶',a:'대전 중구 목척8길 22',m:559,note:'흠뻑쇼 끝나고 2차 후보'},
+ {n:'대추나무칼국수',c:'음식점',ic:'🍜',a:'대전 중구 목척9길 30',m:591,note:'Day2 아침 해장 후보'},
+ {n:'복수분식 본점',c:'음식점',ic:'🥟',a:'대전 중구 중교로 27',m:612,
+  note:'로로네베이커리(중교로 30)와 바로 옆 — Day2에 묶기 좋음'},
+ {n:'고향칼국수',c:'음식점',ic:'🍲',a:'대전 중구 보문로162번길 62',m:690,note:'해장 후보 2'},
+ {n:'태화장',c:'음식점',ic:'🥢',a:'대전 동구 중앙로203번길 82',m:969,note:'대전역 방면'},
+ {n:'오문창순대국밥',c:'음식점',ic:'🍚',a:'대전 대덕구 한밭대로 1153',m:3789,note:'대덕구'},
+ {n:'모선',c:'음식점',ic:'🍽️',a:'대전 서구 계룡로585번길 24',m:4073,note:'서구'},
+ {n:'숯불돈까스',c:'음식점',ic:'🐖',a:'대전 서구 문정로 82',m:4396,note:'서구'},
+ {n:'떡반집 본점',c:'음식점',ic:'🍡',a:'대전 서구 둔산로 8',m:5753,note:'둔산동'},
+ {n:'하쿠류코쿠류 대전봉명점',c:'술집',ic:'🍣',a:'대전 유성구 온천북로33번길 35-11',m:8324,
+  note:'DM 릴스의 그 지점 — 본점이 도보권이니 이번엔 본점으로'}
+];
+function nvCard(d){
+  const walk=Math.round(d.m*1.25/67);
+  const badge = d.m<1500 ? ('도보 '+(walk||1)+'분') : ((d.m/1000).toFixed(1)+'km');
+  const col = d.m<1500 ? '#12a5a0' : '#6b7487';
+  return '<div class="plc"><div class="pi">'+d.ic+'</div><div class="pb">'
+   +'<b>'+d.n+'</b> <span style="font-size:10.5px;font-weight:800;color:'+col+'">'+badge+'</span>'
+   +'<p>'+d.a+'</p>'
+   +(d.note?'<p style="color:#5a4a86;font-size:11.4px;margin-top:-3px">'+d.note+'</p>':'')
+   +'<div class="lnks"><a href="https://map.naver.com/p/search/'+encodeURIComponent(d.n)+'" target="_blank">🗺️ 네이버 지도</a></div>'
+   +'</div></div>';
+}
+document.getElementById('nvWalk').innerHTML  = NV_DATA.filter(d=>d.m<1500).map(nvCard).join('');
+document.getElementById('nvDrive').innerHTML = NV_DATA.filter(d=>d.m>=1500).map(nvCard).join('');
+
+/* ---------- 인스타 아카이브 ---------- */
+const IG_DATA=[
+ {by:'hj',loc:'은행·대흥',th:'eat',ic:'🍗',name:'감자당',date:'7/22',
+  what:'대전 최초 감자치킨 전문점',sell:'글루텐프리 감자치킨 — 밀가루·튀김가루 안 씀',
+  menu:'치킨감자당 꼬치 7,900 / 박스 21,900 · 옹볶이 같이',addr:'대전 대흥동·은행동 — 숙소 도보권',
+  react:'나: "대전가면묵자"',reel:'https://www.instagram.com/reel/DaXRY29TkDm/',map:'대전 감자당'},
+ {by:'hj',loc:'은행·대흥',th:'eat',ic:'🌶️',name:'마라인더컵 은행점',date:'8/12',
+  what:'마라탕·마라꼬치 전문',sell:'마라반·마라탕·마라꼬치',
+  menu:'마라꼬치',addr:'대전 중구 중앙로164번길 26 1층 — 숙소 도보권',
+  react:'나: "저거올영 먹어보자 난한입먹을겡" / "또먹고싶어 … 마라꼬차"',
+  reel:'https://www.instagram.com/reel/Db5XNHVMb1V/',map:'마라인더컵 은행점'},
+ {by:'hj',loc:'은행·대흥',th:'cafe',ic:'🍪',name:'몽심',date:'8/13',
+  what:'대전 구움과자·마들렌 전문',sell:'마들렌, 휘낭시에',
+  menu:'밀키연유·레몬 마들렌 2,500 / 하우스 초콜릿 3,000',addr:'대전 — 릴스 캡션 참고',
+  react:'나: "맛빵가태" · 릴스엔 "정동문화사는 화요일 휴무" 팁도 있음',
+  reel:'https://www.instagram.com/reel/Db72qIuu_zS/',map:'대전 몽심'},
+ {by:'hj',loc:'은행·대흥',th:'bar',ic:'🍶',name:'일광',date:'6/9',
+  what:'대흥동 감성 술집 — 야구 중계 틀어줌',sell:'연어·참치 안주와 사케',
+  menu:'연어국수, 연어참치마끼, 꿈돌이 사케젤리, 노을멜론 요거트아이스크림',addr:'대전 중구 대흥동 — 숙소 도보권',
+  react:'나: "나돈데?!" → "맛잇겟다"',reel:'https://www.instagram.com/reel/DZOswpOhuiN/',map:'대흥동 일광'},
+ {by:'hj',loc:'은행·대흥',th:'cafe',ic:'🥐',name:'로로네베이커리',date:'6/20',
+  what:'대전 빵지순례 필수 페스츄리 맛집',sell:'페스츄리 — "바삭함 레전드"',
+  menu:'페스츄리류',addr:'대전 중구 중교로 30 승촌빌딩 1층 · 09:00–19:30 (주말 10:00–19:00)',
+  react:'희주: "성심당에서 딱 10분 거리! 늦게 가면 없대서 일찍 갔어요"',
+  reel:'https://www.instagram.com/reel/DZxHziFNc0S/',map:'로로네베이커리'},
+ {by:'hj',loc:'은행·대흥',th:'cafe',ic:'🥔',name:'브리즈오브',date:'1/30',
+  what:'강릉 길감자 스타일 쫀득감자를 대전에서',sell:'쫀득감자 + 소스',
+  menu:'우리집쫀득감자(+소스1) 5,500',addr:'대전 중구 보문로262번길 31-2 1~3층 · 11:00–21:00 · 월 휴무',
+  react:'희주: "이제 강릉가서 한시간 이상 줄 서지 말고 대흥동에서"',
+  reel:'https://www.instagram.com/reel/DUGXoZgEzri/',map:'대흥동 브리즈오브'},
+ {by:'hj',loc:'은행·대흥',th:'cafe',ic:'🍫',name:'성심당 본점',date:'3/16',
+  what:'말이 필요없는 대전 대표 빵집',sell:'초코바게트 신상 출시',
+  menu:'초코바게트, 튀김소보로, 명란바게트',addr:'은행동 번화가 — 숙소 도보 5분',
+  react:'나: "초코바게트 또먹고시퍼?" → 희주: "마싯어 보여"',
+  reel:'https://www.instagram.com/reel/DV5wxVaD9O5/',map:'성심당 본점'},
+ {by:'hj',loc:'은행·대흥',th:'cafe',ic:'🥭',name:'성심당 DCC점',date:'5/26',
+  what:'DCC점 한정 메뉴가 따로 있음',sell:'초코망고샌드 (DCC점 전용)',
+  menu:'초코망고샌드',addr:'대전컨벤션센터(DCC) — 유성 방면',
+  react:'나: "성심당이넹"',reel:'https://www.instagram.com/reel/DYl6lnaSQ-q/',map:'성심당 DCC점'},
+
+ {by:'hj',loc:'유성·봉명',th:'eat',ic:'🥘',name:'광주서울곱창 대전봉명점',date:'8/11',
+  what:'크림순대국밥 + 직화곱창',sell:'크림순대국밥·직화곱창',
+  menu:'크림순대국밥+깍두기 / 곱창 매운맛 + 마요 찍먹',addr:'대전 유성구 봉명동 617-4',
+  react:'나: "배고파 대전가서 맛난거많이먹자"',
+  reel:'https://www.instagram.com/reel/DaSAVhmIY4N/',map:'광주서울곱창 대전봉명점'},
+ {by:'me',loc:'유성·봉명',th:'bar',ic:'🍣',name:'하쿠류코쿠류',date:'5/28 · 6/2',
+  what:'봉명동 참치·우니 이자카야 — 야장 감성',sell:'고급 사시미 한 판, 생맥',
+  menu:'천국도(우니·단새우·참치뱃살), 특로스 가츠산도',addr:'대전 유성구 봉명동 623-1',
+  react:'희주: "헐 마싯겟다" · 내가 두 번이나 보낸 곳',
+  reel:'https://www.instagram.com/reel/DY4LoUNqtjU/',map:'하쿠류코쿠류'},
+ {by:'hj',loc:'유성·봉명',th:'play',ic:'🧸',name:'미니소 대전신세계 Art&Science점',date:'6/25',
+  what:'캐릭터 굿즈 — "캐릭터 다이소"',sell:'치이카와·산리오·디즈니·LoL 굿즈, 팝마트 피규어',
+  menu:'—',addr:'대전 유성구 엑스포로 1, 대전신세계 7층 · 10:30–20:00',
+  react:'나: "대전갈때가면더ㅣ겠다"',reel:'https://www.instagram.com/reel/DZ1TAClROTY/',map:'대전신세계 아트앤사이언스'},
+ {by:'hj',loc:'유성·봉명',th:'eat',ic:'🍕',name:'피제리아 다 알리',date:'12/30',
+  what:'나폴리 피자 협회(AVPN) 인증 국내 10곳 중 하나',sell:'정통 나폴리 피자',
+  menu:'—',addr:'대전 유성구 지족로349번길 40-5',
+  react:'전국 AVPN 인증 피자집 모음 게시물에서 대전 몫으로 등장',
+  reel:'https://www.instagram.com/p/DSw_oVBk9Zd/',map:'피제리아 다 알리 대전'},
+ {by:'hj',loc:'유성·봉명',th:'bar',ic:'🔥',name:'안서동야곱집 충남대점',date:'7/20',
+  what:'천안 안서동 막창집의 대전 지점',sell:'야곱·양념·데리야끼·소금·쯔란 막창',
+  menu:'야곱 + 우삼겹·오돌뼈·순대 조합',addr:'대전 유성구 충남대 인근 (본점은 천안 안서동)',
+  react:'나: "맛잇겟다"',reel:'https://www.instagram.com/reel/Cy0asbuSaq7/',map:'안서동야곱집 충남대'},
+
+ {by:'hj',loc:'서구',th:'bar',ic:'🍖',name:'황제닭발숯불꼼장어',date:'8/12',
+  what:'탄방동 생연탄 노포 — 현지인 맛집',sell:'연탄불 닭목살',
+  menu:'닭목살, 매운 닭발 + 마요, 참치폭탄 주먹밥',addr:'대전 서구 탄방동',
+  react:'나: "미쳣다여기"',reel:'https://www.instagram.com/reel/DakR793TUHX/',map:'대전 황제닭발숯불꼼장어'},
+ {by:'hj',loc:'서구',th:'bar',ic:'🌸',name:'초초 (chocho_daejeon)',date:'4/3',
+  what:'갈마동 술집 — 3일 걸려 만드는 수비드 안심',sell:'수비드 안심, 백육개장, 술잔 고르기',
+  menu:'대왕 겹벚꽃(수비드 안심), 백육개장, 참치카나페(기본안주)',
+  addr:'대전 서구 계룡로407번길 56 102호 · 17:30–01:00 · 일 휴무',
+  react:'희주가 "1박2일 대전 다녀왔는데 대박적인 곳" 이라며 공유',
+  reel:'https://www.instagram.com/reel/DWlS7jekzLT/',map:'대전 초초 갈마동'},
+ {by:'hj',loc:'서구',th:'cafe',ic:'🥯',name:'손수베이커리',date:'6/14 · 6/25',
+  what:'대전 1등 맘모스빵 성지',sell:'맘모스빵·소금빵',
+  menu:'초코퍼지맘모스 8,500 / 옥수수맘모찌 7,500 / 바닐라캬라멜맘모스 8,000',
+  addr:'대전 서구 관저동로 42 · 매일 08:00–22:00',
+  react:'희주가 두 번 보냄 — 신상 나올 때마다 챙김',
+  reel:'https://www.instagram.com/reel/DZge7vupxzN/',map:'손수베이커리 관저동'},
+ {by:'hj',loc:'서구',th:'cafe',ic:'🧂',name:'소금빵집 (sogumbbangzzzip)',date:'6/1',
+  what:'둔산동 이마트 뒤 소금빵 전문',sell:'명란에그·연유버터 소금빵',
+  menu:'명란에그소금빵, 연유버터소금빵, 기본 소금빵',addr:'대전 서구 둔산동 이마트 뒤',
+  react:'"대전맛집수사대 출동" — 오픈런 갈길 만큼',
+  reel:'https://www.instagram.com/reel/DY6AR5dPZ82/',map:'둔산동 소금빵집'},
+ {by:'hj',loc:'서구',th:'bar',ic:'🍢',name:'요모',date:'6/30',
+  what:'갈마동 꼬치집',sell:'꼬치',
+  menu:'—',addr:'대전 서구 갈마동 · 17:00–익일 01:00 (L.O 24:00)',
+  react:'나: "맛있겠다 근데 50분기다리는거 소름"',
+  reel:'https://www.instagram.com/reel/DaMcPwYTXjg/',map:'대전 갈마동 요모'},
+
+ {by:'hj',loc:'동구',th:'eat',ic:'🍣',name:'오고야',date:'5/26',
+  what:'자양동 숙성회·초밥집',sell:'숙성회 — "입에 넣자마자 사르르"',
+  menu:'숙성 초밥, 장국',addr:'대전 동구 백룡로11번길 148 1층',
+  react:'희주: "초밥 머그러 가자 .." ← 희주가 먼저 가자고 한 유일한 곳',
+  reel:'https://www.instagram.com/reel/DYvuSXKRpZy/',map:'대전 오고야'},
+
+ {by:'hj',loc:'기타',th:'eat',ic:'🥕',name:'아자자 야채치킨',date:'3/29',
+  what:'"전화 500통 걸어야 예약되는" 마성의 야채치킨',sell:'야채 후라이드 치킨',
+  menu:'야채치킨',addr:'대전 — 캡션에 주소 없음',
+  react:'희주: "대전에 임ㅅ는데 엄청 유명해" / 나: "야채가 엄청다양하네"',
+  reel:'https://www.instagram.com/reel/DWbIsiXh7ns/',map:'대전 아자자 야채치킨'},
+ {by:'me',loc:'기타',th:'eat',ic:'🍗',name:'대전 치킨 (가게명 미상)',date:'6/1',
+  what:'"대전 가면 꼭 먹어야하는 치킨"',sell:'—',
+  menu:'—',addr:'가게명 캡션에 없음',
+  react:'나: "대전이 겁나떠"',reel:'https://www.instagram.com/reel/DSj9hdMiUPv/',map:'대전 치킨 맛집'},
+ {by:'hj',loc:'기타',th:'play',ic:'🗺️',name:'대전여행 맛집 추천VS비추천',date:'6/9',
+  what:'대구인이 1박2일 대전 돌고 쓴 솔직후기 가이드',sell:'현지인 추천 맛집 투어 코스',
+  menu:'—',addr:'가이드 릴스',
+  react:'나: "담에가면묵자"',reel:'https://www.instagram.com/reel/DZMoTB6RUFP/',map:'대전 맛집'},
+ {by:'me',loc:'기타',th:'play',ic:'⌨️',name:'대전 키보드 팝업',date:'6/25',
+  what:'15개 브랜드 · 230개 키보드 모인 키덕후 팝업',sell:'키보드 타건',
+  menu:'—',addr:'대전신세계 Art&Science · ⚠️ 6월 팝업 — 종료 추정',
+  react:'내가 보낸 뒤 반응 없음',reel:'https://www.instagram.com/reel/DZ68kWITOLk/',map:'대전신세계 아트앤사이언스'},
+
+ {by:'me',loc:'근교',th:'cafe',ic:'🍞',name:'베이콜로지 빵학개론 세종점',date:'6/24',
+  what:'세종 사람은 다 안다는 빵집',sell:'베이커리',
+  menu:'—',addr:'세종 국세청로 32 마크원애비뉴 1F (나성동)',
+  react:'—',reel:'https://www.instagram.com/reel/DZo7gF9yz1S/',map:'베이콜로지 빵학개론 세종'},
+ {by:'me',loc:'근교',th:'cafe',ic:'☕',name:'대전 1시간 대형카페',date:'6/23',
+  what:'전국 최초 헌수교가 있는 2,500평 베이커리 카페',sell:'대형 베이커리 카페',
+  menu:'—',addr:'대전에서 차로 1시간 (대전·청주·천안 권역)',
+  react:'희주: "여기 어딘지 알아!"',reel:'https://www.instagram.com/reel/DZ4YE6UtjVx/',map:'대전 근교 대형카페'}
+];
+const IG_TH={eat:['🍽️','맛집'],cafe:['☕','카페·베이커리'],bar:['🍶','술집·이자카야'],play:['🎪','놀거리·가이드']};
+const LOC_ORDER=['은행·대흥','동구','유성·봉명','서구','기타','근교'];
+let curBy='all', curLoc='all';
+
+function subset(){ return IG_DATA.filter(d=> curBy==='all'||d.by===curBy ); }
+function renderLocs(){
+  const ls=[...new Set(subset().map(d=>d.loc))].sort((a,b)=>LOC_ORDER.indexOf(a)-LOC_ORDER.indexOf(b));
+  if(!ls.includes(curLoc)) curLoc='all';
+  const box=document.getElementById('locs');
+  box.innerHTML='<button class="'+(curLoc==='all'?'on':'')+'" data-loc="all">전체</button>'
+    + ls.map(l=>'<button class="'+(curLoc===l?'on':'')+'" data-loc="'+l+'">'+l+'</button>').join('');
+  box.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+    curLoc=b.dataset.loc; renderLocs(); renderList();
+  }));
+}
+function renderList(){
+  const rows=subset().filter(d=> curLoc==='all'||d.loc===curLoc );
+  const box=document.getElementById('iglist'); let h='';
+  Object.keys(IG_TH).forEach(th=>{
+    const g=rows.filter(d=>d.th===th); if(!g.length)return;
+    h+='<div class="thh">'+IG_TH[th][0]+' '+IG_TH[th][1]+' <span style="font-weight:700;color:#aab3c5">'+g.length+'</span></div>';
+    g.forEach(d=>{
+      h+='<div class="pl-item"><div class="pt"><span class="ic">'+d.ic+'</span><b>'+d.name+'</b>'
+       +'<span class="dt">'+(d.by==='hj'?'희주':'나')+' · '+d.date+'</span></div>'
+       +'<div class="body"><dl class="kv2">'
+       +'<dt>뭐 하는 곳</dt><dd>'+d.what+'</dd>'
+       +'<dt>뭘 팔아</dt><dd>'+d.sell+'</dd>'
+       +'<dt>대표 메뉴</dt><dd>'+d.menu+'</dd>'
+       +'<dt>위치</dt><dd>'+d.addr+'</dd></dl>'
+       +(d.react&&d.react!=='—'?'<div class="rct">💬 '+d.react+'</div>':'')
+       +'<div class="iglnk"><a href="'+d.reel+'" target="_blank">📸 릴스 보기</a>'
+       +'<a href="https://map.naver.com/p/search/'+encodeURIComponent(d.map)+'" target="_blank">🗺️ 네이버 지도</a></div>'
+       +'</div></div>';
+    });
+  });
+  box.innerHTML=h||'<div class="cap" style="text-align:center;padding:20px 0">해당 조건에 맞는 곳이 없어요</div>';
+  box.querySelectorAll('.pl-item').forEach(it=>it.addEventListener('click',e=>{
+    if(e.target.closest('a'))return; it.classList.toggle('open');
+  }));
+  document.getElementById('igcnt').innerHTML='대전 관련 <b>'+rows.length+'곳</b> 표시 · 전체 '+IG_DATA.length+'곳'
+    +'<br>DM 메시지 4,835개 / 릴스·게시물 공유 1,423개에서 추림';
+}
+document.querySelectorAll('.igseg button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.igseg button').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); curBy=b.dataset.by; curLoc='all'; renderLocs(); renderList();
+}));
+renderLocs(); renderList();
+</script>
+</body>
+</html>
