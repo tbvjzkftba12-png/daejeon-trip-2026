@@ -745,7 +745,7 @@ a.blk{display:block; text-align:center; background:var(--navy); color:#fff; text
     <div class="okbox">📍 <b>핀 위치는 실제 좌표다.</b> 네이버 지역검색에서 받은 위경도를 그대로 찍었고, 거리·축척도 실제 값이다.</div>
     <div class="okbox">📱 <b>내 위치 쓰는 법</b> — 지도 오른쪽 <b>📍</b> 버튼 → 권한 요청이 뜨면 <b>허용</b>. 파란 점으로 표시되고, 숙소·목원대까지 남은 거리와 가장 가까운 장소 3곳이 뜬다. 핀을 고르면 <b>내 위치에서 몇 m</b>인지도 같이 나온다.<br>
     <span style="font-size:11px">※ 깃허브 주소(https)로 열어야 작동한다. 파일로 열면 브라우저가 위치를 막는다.</span></div>
-    <div class="warnbox">🗺️ <b>배경 지도는 OpenStreetMap이다.</b> 네이버 지도 API는 네이버 클라우드에서 발급받은 키가 있어야 쓸 수 있어서 대신 넣었다. 한글 도로명·건물명은 그대로 나온다. 오른쪽 <b>자세히</b> 버튼을 누르면 상세한 지도로 바뀐다.<br>
+    <div class="warnbox">🗺️ <b>배경 지도는 OpenStreetMap이다.</b> 네이버 지도 API는 네이버 클라우드에서 발급받은 키가 있어야 쓸 수 있어서 대신 넣었다. 한글 도로명·동 이름·사거리 이름까지 그대로 나온다. 오른쪽 <b>심플</b> 버튼을 누르면 아이콘을 걷어낸 깔끔한 지도로 바뀐다(대신 많이 축소하면 지명이 영문으로 나온다).<br>
     <span style="font-size:11px">※ 실제 길찾기는 각 핀의 <b>"네이버 지도에서 열기"</b>로. 빨간 점선 603번 노선은 방향 참고용 개략선이다.</span></div>
     <div class="warnbox">📶 <b>배경 지도는 인터넷이 있어야 뜬다.</b> 데이터가 안 터지면 지도는 비지만 <b>핀·거리 링·거리 목록은 그대로</b> 보인다.</div>
     <div class="okbox">🎯 <b>보는 법</b><br>
@@ -1550,10 +1550,10 @@ const HOME={la:36.32498, lo:127.42960};
 /* 타일 소스 — 네이버 지도는 발급받은 클라이언트 키가 있어야 해서 OSM 계열을 쓴다.
    둘 다 한글 도로명·건물명이 나온다. */
 const TILES=[
- {n:'기본',   u:'https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png',
-  at:'© OpenStreetMap · © CARTO', bg:'#f2efe9'},
- {n:'자세히', u:'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-  at:'© OpenStreetMap contributors', bg:'#e8e0d8'}
+ {n:'기본', u:'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+  at:'© OpenStreetMap contributors', bg:'#e8e0d8'},
+ {n:'심플', u:'https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png',
+  at:'© OpenStreetMap · © CARTO', bg:'#f2efe9'}
 ];
 let tsi=0;
 
@@ -1798,7 +1798,7 @@ const HU=prX(HOME.lo), HV=prY(HOME.la);
 
 let W=323, H=471, sel=null, curFil='all', me=null, noClick=false, watchId=null, meFirst=true;
 let view={cx:HU, cy:HV, S:14e6};
-const S_MIN=200000, S_MAX=90e6;
+const S_MIN=80000, S_MAX=90e6;
 const SX=u=>W/2+(u-view.cx)*view.S, SY=v=>H/2+(v-view.cy)*view.S;
 const kOf=()=>view.S/WORLD_M;                     /* 화면 1px = 몇 m 의 역수 */
 function mk(t,at){const e=document.createElementNS(NS,t);for(const k in at)e.setAttribute(k,at[k]);return e;}
@@ -1808,7 +1808,7 @@ const tiles={};
 function drawTiles(){
   const src=TILES[tsi];
   tileLayer.style.background=src.bg;
-  const z=Math.max(11,Math.min(18,Math.round(Math.log2(view.S/256))));
+  const z=Math.max(7,Math.min(18,Math.round(Math.log2(view.S/256))));
   const n=Math.pow(2,z);
   const u0=view.cx-(W/2)/view.S, v0=view.cy-(H/2)/view.S;
   const u1=u0+W/view.S,          v1=v0+H/view.S;
@@ -1853,6 +1853,14 @@ gBase.appendChild(busEl);
 const busLb=mk('text',{fill:'#c02a40','font-size':10,'font-weight':800,'text-anchor':'middle',
   stroke:'#fff','stroke-width':3,'paint-order':'stroke'});
 busLb.textContent='603번 (개략)'; gBase.appendChild(busLb);
+
+/* 대전 밖에 있을 때 내 위치 ↔ 숙소 연결선 */
+const meLine=mk('path',{fill:'none',stroke:'#2f6fdd','stroke-width':2,'stroke-dasharray':'7 5',
+  opacity:.6,'stroke-linecap':'round'});
+gBase.appendChild(meLine);
+const meLineLb=mk('text',{fill:'#1d4ea8','font-size':10.5,'font-weight':800,'text-anchor':'middle',
+  stroke:'#fff','stroke-width':3.2,'paint-order':'stroke'});
+gBase.appendChild(meLineLb);
 
 const RINGS=[250,500,1000,2000,5000];
 const ringEls=RINGS.map(m=>{
@@ -1940,7 +1948,15 @@ function draw(fast){
     meLb.style.display=lbOn?'':'none';
     boxes.push([x-13,y-13,x+13,y+13,null]);
     if(lbOn) boxes.push([x-26,y-30,x+26,y-16,null]);
-  } else gMe.style.display='none';
+    if(me.far){
+      const hx2=SX(HU), hy2=SY(HV);
+      meLine.style.display=''; meLineLb.style.display='';
+      meLine.setAttribute('d','M'+x.toFixed(1)+' '+y.toFixed(1)+'L'+hx2.toFixed(1)+' '+hy2.toFixed(1));
+      meLineLb.setAttribute('x',((x+hx2)/2).toFixed(1));
+      meLineLb.setAttribute('y',((y+hy2)/2-7).toFixed(1));
+      meLineLb.textContent='숙소까지 '+fmtD(me.dHome)+' (직선)';
+    } else { meLine.style.display='none'; meLineLb.style.display='none'; }
+  } else { gMe.style.display='none'; meLine.style.display='none'; meLineLb.style.display='none'; }
   /* 핀 — 1차 배치 / 2차 라벨 */
   MP.slice().sort((a,b)=>{
     const s=p=>p===sel?0:(p.c==='core'?1:(p.d?2:(p.c==='ref'?4:3)));
@@ -2070,17 +2086,33 @@ function onPos(ps){
   me.dHome=distM(me.la,me.lo,HOME.la,HOME.lo);
   const mw=MP.find(p=>p.n==='목원대 대운동장');
   me.dShow=distM(me.la,me.lo,mw.la,mw.lo);
+  me.far = me.dHome>15000;                    /* 대전 원도심에서 15km 밖이면 '이동 중' 모드 */
   meBtn.classList.remove('busy'); meBtn.classList.add('on');
-  const near=MP.filter(p=>p.c!=='ref').map(p=>({p:p,d:distM(me.la,me.lo,p.la,p.lo)}))
-              .sort((a,b)=>a.d-b.d).slice(0,3);
-  meCard('<b>📍 현재 위치</b> <i>정확도 ±'+Math.round(me.acc)+'m</i>'
-    +'<p>🏠 숙소까지 <b>'+fmtD(me.dHome)+'</b>'+(me.dHome<2500?' · 도보 '+Math.max(1,Math.round(me.dHome*1.25/67))+'분':'')
-    +' &nbsp;·&nbsp; 💦 목원대까지 <b>'+fmtD(me.dShow)+'</b></p>'
-    +'<p class="nr">가까운 곳 — '+near.map(o=>'<span data-n="'+encodeURIComponent(o.p.n)+'">'+o.p.e+' '+o.p.n+' '+fmtD(o.d)+'</span>').join('')+'</p>');
+  let body='<p>🏠 숙소까지 <b>'+fmtD(me.dHome)+'</b>'
+    +(me.dHome<2500?' · 도보 '+Math.max(1,Math.round(me.dHome*1.25/67))+'분':'')
+    +' &nbsp;·&nbsp; 💦 목원대까지 <b>'+fmtD(me.dShow)+'</b></p>';
+  if(me.far){
+    body+='<p style="color:#5a6579">아직 대전 밖이야 — <b>위치는 정상으로 잡히고 있다.</b> '
+      +'대전에 들어오면 여기에 <b>가까운 장소</b>가 자동으로 뜬다.</p>'
+      +'<p class="nr"><span data-a="fit">🚗 내 위치 ↔ 숙소 한눈에</span>'
+      +'<span data-a="home">🏠 숙소 쪽 보기</span></p>';
+  }else{
+    const near=MP.filter(p=>p.c!=='ref').map(p=>({p:p,d:distM(me.la,me.lo,p.la,p.lo)}))
+                .sort((a,b)=>a.d-b.d).slice(0,3);
+    body+='<p class="nr">가까운 곳 — '+near.map(o=>'<span data-n="'+encodeURIComponent(o.p.n)+'">'
+      +o.p.e+' '+o.p.n+' '+fmtD(o.d)+'</span>').join('')+'</p>';
+  }
+  meCard('<b>📍 현재 위치</b> <i>정확도 ±'+Math.round(me.acc)+'m</i>'+body);
   document.querySelectorAll('#mMe .nr span').forEach(s=>s.addEventListener('click',()=>{
+    if(s.dataset.a==='fit'){ fit([me,{u:HU,v:HV}],46); setViewBtn(null); draw(); return; }
+    if(s.dataset.a==='home'){ VIEWS.old(); setViewBtn('old'); draw(); return; }
     const p=MP.find(q=>q.n===decodeURIComponent(s.dataset.n)); if(p) focusOn(p,6e6);
   }));
-  if(meFirst){ meFirst=false; view.cx=me.u; view.cy=me.v; if(view.S<5e6) view.S=8e6; setViewBtn(null); }
+  if(meFirst){
+    meFirst=false; setViewBtn(null);
+    if(me.far) fit([me,{u:HU,v:HV}],46);
+    else { view.cx=me.u; view.cy=me.v; if(view.S<5e6) view.S=8e6; }
+  }
   draw();
   if(sel) pick(sel);
 }
