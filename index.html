@@ -23,10 +23,10 @@ header .hchips{display:flex; gap:6px; margin-top:13px; flex-wrap:wrap;}
 header .hchips span{font-size:11px; font-weight:700; background:rgba(255,255,255,.18);
   border:1px solid rgba(255,255,255,.28); border-radius:999px; padding:4px 10px;}
 
-nav{position:sticky; top:0; z-index:50; display:flex; gap:4px; padding:10px 8px;
+nav{position:sticky; top:0; z-index:50; display:flex; gap:3px; padding:10px 7px;
   background:rgba(244,246,251,.92); backdrop-filter:blur(10px);}
 nav button{flex:1; border:1px solid var(--line); background:var(--card); color:var(--sub);
-  padding:10px 1px; border-radius:11px; font-size:11.4px; font-weight:700; cursor:pointer;
+  padding:10px 0; border-radius:11px; font-size:11px; font-weight:700; cursor:pointer;
   white-space:nowrap; min-width:0; transition:.15s; font-family:inherit; letter-spacing:-.3px;}
 nav button.on{background:var(--navy); border-color:var(--navy); color:#fff;}
 
@@ -155,6 +155,59 @@ dl.kv2 dt{color:var(--sub); font-weight:700;}
 footer{text-align:center; font-size:11px; color:var(--sub); padding:22px 16px 8px; line-height:1.7;}
 a.blk{display:block; text-align:center; background:var(--navy); color:#fff; text-decoration:none;
   font-size:12.8px; font-weight:700; padding:11px; border-radius:12px; margin-top:10px;}
+
+/* 지도 */
+.mapwrap{position:relative; border:1px solid var(--line); border-radius:14px; overflow:hidden;
+  background:#e9eff7;}
+#mapSvg{display:block; width:100%; height:58vh; min-height:340px; max-height:520px;
+  touch-action:none; cursor:grab;}
+#mapSvg.drag{cursor:grabbing;}
+.mctl{position:absolute; display:flex; gap:5px; z-index:3;}
+.mctl.view{left:8px; top:8px;}
+.mctl.zoom{right:8px; top:8px; flex-direction:column;}
+.mctl button{border:1px solid #cfd8e8; background:rgba(255,255,255,.94); color:var(--navy);
+  font-family:inherit; font-weight:800; font-size:11px; border-radius:9px; padding:7px 8px;
+  cursor:pointer; box-shadow:0 1px 4px rgba(18,40,80,.13); letter-spacing:-.3px; white-space:nowrap;}
+.mctl.zoom button{width:33px; height:33px; font-size:18px; padding:0; line-height:1;}
+.mctl button.on{background:var(--navy); color:#fff; border-color:var(--navy);}
+.mscale{position:absolute; left:9px; bottom:9px; z-index:3; font-size:10.5px; font-weight:800;
+  color:#41506b; background:rgba(255,255,255,.88); border-radius:7px; padding:4px 8px;
+  display:flex; align-items:center; gap:7px;}
+.mscale i{display:block; height:6px; border:1.5px solid #41506b; border-top:none; width:46px;}
+.mhint{position:absolute; right:9px; bottom:9px; z-index:3; font-size:10.5px; color:#5a6579;
+  background:rgba(255,255,255,.88); border-radius:7px; padding:4px 8px; font-weight:700;}
+
+.mfil{display:flex; gap:5px; flex-wrap:wrap; margin-bottom:11px;}
+.mfil button{border:1px solid var(--line); background:var(--card); color:var(--sub);
+  padding:6px 10px; border-radius:999px; font-size:11.3px; font-weight:700; cursor:pointer;
+  font-family:inherit; white-space:nowrap;}
+.mfil button.on{background:var(--navy); border-color:var(--navy); color:#fff;}
+
+#mInfo{margin-top:11px; border:1px solid var(--line); border-radius:13px; padding:12px 13px;
+  background:#fbfcfe; min-height:74px;}
+#mInfo .mih{display:flex; gap:10px; align-items:flex-start;}
+#mInfo .mie{width:38px; height:38px; border-radius:11px; background:#eef2fa; flex:none;
+  display:flex; align-items:center; justify-content:center; font-size:20px;}
+#mInfo .mit{flex:1; min-width:0;}
+#mInfo .mit b{font-size:14px; font-weight:800; display:block; letter-spacing:-.3px;}
+#mInfo .mit p{font-size:11.6px; color:var(--sub); margin-top:3px;}
+#mInfo .mtags{display:flex; gap:4px; flex-wrap:wrap; margin-top:8px;}
+#mInfo .mtags span{font-size:10.5px; font-weight:800; border-radius:999px; padding:3px 9px; color:#fff;}
+#mInfo .mnote{font-size:12.2px; line-height:1.6; margin-top:10px; color:#39435a;
+  background:#f4f6fb; border-radius:9px; padding:8px 10px;}
+#mInfo .empty{font-size:12px; color:var(--sub); text-align:center; padding:16px 0;}
+
+.mleg{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; font-size:10.8px; color:var(--sub);}
+.mleg span{display:flex; align-items:center; gap:4px; font-weight:700;}
+.mleg i{width:10px; height:10px; border-radius:50%; display:block; box-shadow:0 0 0 1.5px #fff, 0 0 0 2.5px rgba(20,40,80,.18);}
+
+.drow{display:flex; align-items:center; gap:9px; padding:8px 2px; border-bottom:1px dashed var(--line);
+  cursor:pointer; font-size:12.4px;}
+.drow:last-child{border-bottom:none;}
+.drow .de{font-size:15px; flex:none; width:20px; text-align:center;}
+.drow .dn{flex:1; min-width:0; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.drow .dd{flex:none; font-size:11.3px; font-weight:800; color:var(--navy);}
+.drow .dw{flex:none; font-size:10.8px; color:var(--sub); width:52px; text-align:right;}
 </style>
 </head>
 <body>
@@ -173,6 +226,7 @@ a.blk{display:block; text-align:center; background:var(--navy); color:#fff; text
 <nav>
   <button class="on" data-t="d1">Day 1</button>
   <button data-t="d2">Day 2</button>
+  <button data-t="map">지도</button>
   <button data-t="info">정보</button>
   <button data-t="pick">추천</button>
   <button data-t="save">저장</button>
@@ -624,6 +678,60 @@ a.blk{display:block; text-align:center; background:var(--navy); color:#fff; text
   </div>
 </section>
 
+<!-- ============ 지도 ============ -->
+<section class="tab" id="map">
+
+  <div class="card" style="padding:15px 12px 16px">
+    <h2 style="padding:0 4px"><span class="em">🗺️</span> 대전 지도</h2>
+    <div class="cap" style="padding:0 4px"><b>🏠 숙소</b>와 <b>💦 목원대</b>가 기준. 플랜에 나온 장소를 전부 찍어놨어 — <b>핀을 탭하면</b> 바로 아래에 정보가 뜬다.</div>
+
+    <div class="mfil" id="mFil"></div>
+
+    <div class="mapwrap" id="mapWrap">
+      <svg id="mapSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div class="mctl view">
+        <button data-v="old" class="on">원도심</button>
+        <button data-v="show">숙소↔공연</button>
+        <button data-v="all">전체</button>
+      </div>
+      <div class="mctl zoom">
+        <button data-z="in" aria-label="확대">+</button>
+        <button data-z="out" aria-label="축소">−</button>
+      </div>
+      <div class="mscale"><i></i><b id="mScaleTxt">500m</b></div>
+      <div class="mhint" id="mHint">드래그 · 핀치 확대</div>
+    </div>
+
+    <div id="mInfo"><div class="empty">지도에서 핀을 탭해봐 👆</div></div>
+
+    <div class="mleg" id="mLeg"></div>
+  </div>
+
+  <div class="card">
+    <h2><span class="em">📏</span> 숙소에서 얼마나 먼가</h2>
+    <div class="cap">직선거리 기준 · 실제 걷는 길은 20~30% 더 나온다 · <b>탭하면 지도에서 그 핀이 열려</b></div>
+    <div class="thh">🚶 걸어갈 수 있는 곳 <span id="mCntWalk" style="font-weight:700;color:var(--sub)"></span></div>
+    <div id="mDistWalk"></div>
+    <div class="thh">🚗 차·버스로 가야 하는 곳 <span id="mCntDrive" style="font-weight:700;color:var(--sub)"></span></div>
+    <div id="mDistDrive"></div>
+  </div>
+
+  <div class="card">
+    <h2><span class="em">ℹ️</span> 이 지도에 대해</h2>
+    <div class="cap">읽고 쓰면 훨씬 편해진다</div>
+    <div class="okbox">📍 <b>핀 위치는 실제 좌표다.</b> 네이버 지역검색에서 받은 위경도를 그대로 찍었고, 거리·축척도 실제 값이다. 핀끼리의 거리 관계는 믿어도 된다.</div>
+    <div class="warnbox">🖍️ <b>하천·603번 노선·지역 이름은 개략도다.</b> 방향을 잡으라고 단순하게 그린 선이지 실제 물길·버스 경로가 아니다. <b>길 찾기는 각 핀의 "네이버 지도" 버튼</b>으로.</div>
+    <div class="okbox">🎯 <b>보는 법</b><br>
+    · <b>원도심</b> — 숙소 걸어서 갈 수 있는 범위. 대부분 일정이 여기 몰려 있다<br>
+    · <b>숙소↔공연</b> — 숙소에서 목원대까지 8.1km가 한눈에<br>
+    · <b>전체</b> — DM·네이버에 나온 대전 전역<br>
+    · 확대하면 핀 이름이 뜨고, 겹치면 자동으로 숨는다</div>
+    <div class="warnbox">🚫 <b>지도에 못 찍은 곳</b> — 위치를 특정할 수 없어서 뺐다.<br>
+    아자자 야채치킨 · 해물건강원 · "대전 가면 꼭 먹어야 하는 치킨" · 대전 1시간 대형카페 · 맛집/빵투어 가이드 릴스 2개 (장소가 아니라 코스 소개) · 베이콜로지 빵학개론(세종이라 범위 밖) · 대전 키보드 팝업(6월 종료 추정)</div>
+  </div>
+
+</section>
+
 <!-- ============ 정보 ============ -->
 <section class="tab" id="info">
 
@@ -1024,6 +1132,7 @@ a.blk{display:block; text-align:center; background:var(--navy); color:#fff; text
 <footer>
   대전 흠뻑쇼 여행 · 2026.08.22–23<br>
   인스타 DM 4,919개 · 릴스 1,453개에서 추린 대전 35곳 + 네이버 저장 14곳<br>
+  지도 탭에 좌표로 찍은 장소 53곳<br>
   <span style="opacity:.7">※ 영업시간·휴무는 방문 전 재확인</span>
 </footer>
 
@@ -1401,6 +1510,589 @@ document.querySelectorAll('.igseg button').forEach(b=>b.addEventListener('click'
   b.classList.add('on'); curBy=b.dataset.by; curLoc='all'; renderLocs(); renderList();
 }));
 renderLocs(); renderList();
+/* ================= 지도 ================= */
+(function(){
+const svgEl=document.getElementById('mapSvg');
+if(!svgEl) return;
+const NS='http://www.w3.org/2000/svg';
+
+const HOME={la:36.32498, lo:127.42960};
+
+/* 카테고리 */
+const MCAT={
+ core:{c:'#e0384f', n:'숙소·공연'},
+ eat :{c:'#f2803c', n:'맛집'},
+ cafe:{c:'#d9a441', n:'카페·빵'},
+ bar :{c:'#7b61c9', n:'술집'},
+ play:{c:'#12a5a0', n:'놀거리'},
+ move:{c:'#2f6fdd', n:'이동·주차'},
+ save:{c:'#5a8f6b', n:'네이버 저장'},
+ ref :{c:'#9aa5b8', n:'참고'}
+};
+const DCOL={'D1':'#2f6fdd','D2':'#d9a441','D2 선택':'#12a5a0','메인':'#e0384f'};
+
+/* 장소 — la/lo는 네이버 지역검색 좌표 */
+const MP=[
+/* --- 핵심 --- */
+{n:'스테이 와유',e:'🏠',la:36.32498,lo:127.42960,c:'core',d:'메인',
+ a:'대전 중구 대흥로165번길 36',w:'우리 숙소 · 셀프 체크인 16:00~21:00 (키패드)',
+ k:'건물 주차 불가 — 차는 대흥동 공영주차장에. 샴푸·바디워시·드라이기·고데기·수건 다 있음.',q:'대전 중구 대흥로165번길 36'},
+{n:'목원대 대운동장',e:'💦',la:36.3245749,lo:127.3394577,c:'core',d:'메인',
+ a:'대전 서구 도안북로 88',w:'싸이 흠뻑쇼 SUMMER SWAG 2026 · 8/22(토) 18:00',
+ k:'숙소에서 직선 8.1km. 603번 버스 종점이라 으능정이에서 타면 환승 없이 정문까지. 택시면 "서구 도안북로 88, 목원대학교 정문".',q:'목원대학교 대운동장'},
+
+/* --- Day 1 --- */
+{n:'오고야',e:'🍣',la:36.3422464,lo:127.4503136,c:'eat',d:'D1',
+ a:'대전 동구 백룡로11번길 148 1층',w:'Day1 점심 · 숙성회·초밥',
+ k:'희주가 1년치 DM에서 유일하게 먼저 "초밥 머그러 가자" 한 곳. 대전역 방면이라 진입 동선에 걸린다.',
+ r:'https://www.instagram.com/reel/DYvuSXKRpZy/'},
+{n:'브리즈오브',e:'🥔',la:36.3267394,lo:127.4235603,c:'cafe',d:'D1',
+ a:'대전 중구 보문로262번길 31-2 (1~3층)',w:'Day1 카페 · 쫀득감자 5,500원',
+ k:'11:00–21:00 · 월 휴무(토요일 ✓). 숙소 도보권이라 여기서 시간 보내다 16시 체크인하면 동선 손실 0.',
+ r:'https://www.instagram.com/reel/DUGXoZgEzri/'},
+{n:'대흥동 공영주차장',e:'🅿️',la:36.3258281,lo:127.4291797,c:'move',d:'D1',
+ a:'대전 중구 대종로452번길 27',w:'차는 여기 세우고 일요일까지',
+ k:'호스트가 안내한 주차장. 8/22 15:30 ~ 8/23 13:00 약 21시간, 1~1.5만원 예상.',q:'대흥동공영주차장'},
+{n:'으능정이거리 · 스카이로드',e:'✨',la:36.3287849,lo:127.4280310,c:'move',d:'D1',
+ a:'대전 중구 은행동',w:'603번 타는 곳 + 214m LED 아케이드',
+ k:'숙소 도보 8분. 여기서 603번 타면 목원대 종점까지 환승 없음(막차 22:30). 스카이로드는 하절기 19:00~23:00 영상 — 공연 끝나고 돌아올 때 타이밍이 딱 맞는다. 지붕이 있어 비가 와도 상관없다.',
+ q:'으능정이 스카이로드'},
+{n:'하쿠류코쿠류 본점',e:'🍣',la:36.3249349,lo:127.4238479,c:'bar',d:'D1',
+ a:'대전 중구 대흥로111번길 42 1층',w:'Day1 야식 1순위 · 참치·우니 이자카야',
+ k:'내가 DM에 두 번이나 보낸 곳. 릴스는 봉명점(유성구)이라 포기한 줄 알았는데 본점이 숙소 도보 10분. 본점·봉명점 메뉴가 다를 수 있으니 천국도·특로스 가츠산도 있는지 확인.',
+ r:'https://www.instagram.com/reel/DY4LoUNqtjU/'},
+{n:'감자당',e:'🍗',la:36.3256789,lo:127.4296392,c:'eat',d:'D1',
+ a:'대전 중구 대종로452번길 30 1층 101호',w:'Day1 야식 2순위 · 감자치킨',
+ k:'내가 "대전가면묵자"라고 찍은 곳. 글루텐프리 감자치킨 — 꼬치 7,900 / 박스 21,900, 옹볶이 같이. 술 안 마실 거면 이쪽.',
+ r:'https://www.instagram.com/reel/DaXRY29TkDm/'},
+{n:'일광',e:'🍶',la:36.3268381,lo:127.4237442,c:'bar',d:'D1',
+ a:'대전 중구 중앙로122번길 20 2층',w:'Day1 야식 3순위 · 연어·사케',
+ k:'연어국수, 연어참치마끼, 꿈돌이 사케젤리. 야구 중계 틀어준다.',
+ r:'https://www.instagram.com/reel/DZOswpOhuiN/'},
+
+/* --- Day 2 빵투어 --- */
+{n:'성심당 본점',e:'🍫',la:36.3276671,lo:127.4273419,c:'cafe',d:'D2',
+ a:'대전 중구 대종로480번길 15',w:'빵투어 ① · 08:00 오픈 — 제일 먼저',
+ k:'명란바게뜨·튀김소보로·초코바게트. 일요일 오전 웨이팅이 길어서 9시 전 도착이 안전.',
+ r:'https://www.instagram.com/reel/DV5wxVaD9O5/'},
+{n:'영춘모찌',e:'🍡',la:36.3253618,lo:127.4241462,c:'cafe',d:'D2',
+ a:'대전 중구 중교로 40',w:'빵투어 ② · 09:00–13:00 (오후 마감)',
+ k:'1,800원 갓성비 수제 모찌, 12년째. 백앙금 딸기 모찌 추천. 13시에 닫으니까 늦잠 자면 여기가 제일 먼저 날아간다.',
+ r:'https://www.instagram.com/reel/DZj4jfqRkHn/'},
+{n:'몽심 대흥점',e:'🍪',la:36.3251371,lo:127.4235616,c:'cafe',d:'D2',
+ a:'대전 중구 중교로 32 1층',w:'빵투어 ③ · 11:00 오픈 · 대전 빵축제 1등',
+ k:'레몬 마들렌 · 밀키연유 마들렌 2,500 · 발로나초코/황치즈 휘낭시에. 현장 웨이팅 09:00 / 캐치테이블 09:30부터. 희주: "제가 먹어본 휘낭시에 중에 제일 바삭하고 쫀득".',
+ r:'https://www.instagram.com/reel/Db72qIuu_zS/'},
+{n:'로로네베이커리',e:'🥐',la:36.3250351,lo:127.4232818,c:'cafe',d:'D2',
+ a:'대전 중구 중교로 30 승촌빌딩 1층',w:'빵투어 ② · 주말 10:00–19:00',
+ k:'페스츄리 바삭함 레전드 · 피스타치오·명란 소금빵. 영춘모찌(40)·몽심(32)과 같은 중교로 골목 — 세 곳이 100m 안에 다 있다.',
+ r:'https://www.instagram.com/reel/DZxHziFNc0S/'},
+
+/* --- Day 2 인형뽑기 --- */
+{n:'와쿠와쿠 대흥점',e:'🎰',la:36.3268699,lo:127.4247092,c:'play',d:'D2',
+ a:'대전 중구 중앙로130번길 28 1층',w:'쿠지 + 가챠 + 인형뽑기',
+ k:'덕질·캐릭터 아이템이 많아서 치이카와 노린다면 1순위.',q:'와쿠와쿠 대흥점'},
+{n:'대빵인형뽑기 대전은행점',e:'🧸',la:36.3281113,lo:127.4285254,c:'play',d:'D2',
+ a:'대전 중구 중앙로164번길 29',w:'"체인점이지만 훨 잘 뽑히는 느낌"',
+ k:'마라인더컵 은행점 바로 앞이라 묶기 좋다. 희주: "나도 뽑아죠".',q:'대빵인형뽑기 대전은행점'},
+{n:'토이박스',e:'🕹️',la:36.3286473,lo:127.4275166,c:'play',d:'D2',
+ a:'대전 중구 대종로488번길 25',w:'인형뽑기 · 너구리와친구들과 같은 건물',
+ k:'지도 검색이 잘 안 되면 "서브웨이 대전은행점" 찍고 가기. 3층이 너구리와친구들이라 한 건물에서 인형뽑기 + 라쿤 둘 다 해결.',q:'대전 토이박스 은행동'},
+{n:'중앙로 지하상가 (말랑이)',e:'🫧',la:36.3282356,lo:127.4247713,c:'play',d:'D2',
+ a:'대전 중구 중앙로 145',w:'말랑이·왁뿌볼 파는 매장 모음',
+ k:'D나03 925 / D가05 악세사리하우스 / B나06 악세사리하우스2호 / B가14 츄. 지하라 비 와도 상관없다.',
+ r:'https://www.instagram.com/reel/DaVLXMiJDVz/',q:'대전중앙로지하상가'},
+
+/* --- Day 2 선택 --- */
+{n:'성심당 롯데백화점 대전점',e:'🥖',la:36.3402410,lo:127.3899924,c:'cafe',d:'D2 선택',
+ a:'대전 서구 계룡로 598 1층',w:'본점보다 큰 플래그십 · 08:00–22:00',
+ k:'희주: "아니면 롯백으로 가쟈..." 롯데점 한정빵 — 김치삼겹고로케·참치빵빵·쫀득불고기·에멘탈통소세지·피스타치오바게트. 603번이 여기(괴정동)도 지난다. 다만 귀가 방향과 반대.',
+ r:'https://www.instagram.com/reel/DcIx6J5S2sn/'},
+{n:'신선칼국수',e:'🥔',la:36.3303387,lo:127.4422569,c:'eat',d:'D2 선택',
+ a:'대전 동구 계족로 188',w:'대왕 해시브라운급 감자전',
+ k:'민물새우 칼국수 · 물총조개칼국수. 나: "감자전미쳣다". 대전역 동쪽이라 귀갓길 방향과 맞는다.',
+ r:'https://www.instagram.com/reel/DcKWS__v3KY/'},
+{n:'마라인더컵 은행점',e:'🌶️',la:36.3282060,lo:127.4281404,c:'eat',d:'D2 선택',
+ a:'대전 중구 중앙로164번길 26 1층',w:'마라탕·마라꼬치 · 도보권',
+ k:'나: "저거올영 먹어보자 난한입먹을겡" / "또먹고싶어 … 마라꼬차". 대빵인형뽑기 바로 앞이라 묶기 좋다.',
+ r:'https://www.instagram.com/reel/Db5XNHVMb1V/'},
+{n:'대추나무칼국수',e:'🍜',la:36.3296693,lo:127.4263574,c:'eat',d:'D2 선택',
+ a:'대전 중구 목척9길 30 1층',w:'해장 후보 · 도보 11분',
+ k:'내 네이버 저장 목록에 있던 곳. Day2 아침 해장용.',q:'대추나무칼국수'},
+{n:'냥이싸롱',e:'🐱',la:36.3279985,lo:127.4288121,c:'play',d:'D2 선택',
+ a:'대전 중구 대종로480번길 40 3층',w:'고양이카페 · 주말 11:00–21:00',
+ k:'DM 1위 취향이 동물(217회)인데 대전 목록엔 하나도 없었다. 성심당 바로 옆 골목이라 끼우기 제일 쉽고, 보드게임·닌텐도까지 있어서 비 와도 몇 시간 버틴다.',q:'대전 냥이싸롱'},
+{n:'대전신세계 Art&Science',e:'🐠',la:36.3748127,lo:127.3813091,c:'play',d:'D2 선택',
+ a:'대전 유성구 엑스포로 1',w:'아쿠아리움 · 넥스페리움 · 미니소 7층 · 전망대',
+ k:'비 오면 여기 하나로 하루가 해결된다. 엑스포 아쿠아리움(200여 종 2만여 마리), KAIST 넥스페리움, 193m 아트 전망대, 3,400평 옥상정원, 미니소 7층(치이카와·산리오·팝마트, 10:30–20:00). 유성구라 귀가 방향과 반대 — 최소 3시간.',
+ r:'https://www.instagram.com/reel/DZ1TAClROTY/',q:'대전신세계 아트앤사이언스'},
+{n:'소제동 카페거리',e:'🏘️',la:36.3350,lo:127.4380,c:'play',d:'D2 선택',
+ a:'대전 동구 소제동',w:'철도관사촌 리모델링 카페촌',ap:1,
+ k:'일제강점기 철도관사촌을 개조한 카페촌 — 국내 최대 규모가 그대로 남아있다. 대전역 동편 도보 10분, 체크아웃 후 귀갓길 방향과도 맞는다. 다만 걸어다녀야 해서 비 오면 별로.',q:'소제동 카페거리'},
+
+/* --- 취향으로 찾은 추가 추천 (도보권) --- */
+{n:'너구리와친구들 은행점',e:'🦝',la:36.3286440,lo:127.4274912,c:'play',d:'',
+ a:'대전 중구 대종로488번길 25 3층',w:'라쿤·미어캣·강아지 · 토·일 13:00–21:30',
+ k:'강아지 말고 라쿤·미어캣이라 희주가 릴스 찍기 딱. 아래층이 토이박스(인형뽑기)라 한 건물에서 두 개 해결.',q:'너구리와친구들 은행점'},
+{n:'고양이카페 DAZE',e:'😺',la:36.3277369,lo:127.4295715,c:'play',d:'',
+ a:'대전 중구 중앙로170번길 48 3층',w:'은행동 고양이카페',
+ k:'냥이싸롱이 붐비면 여기. 숙소에서 더 가깝다.',q:'대전 고양이카페 DAZE'},
+{n:'셜록홈즈 대전은행점',e:'🔐',la:36.3287831,lo:127.4284430,c:'play',d:'',
+ a:'대전 중구 대종로488번길 42 2층',w:'방탈출',
+ k:'DM에 방탈출·공포체험 릴스가 여러 번 나왔다. 비 오는 날 실내 대안.',q:'셜록홈즈 대전은행점'},
+{n:'테크런 대전점',e:'🏃',la:36.3278643,lo:127.4289745,c:'play',d:'',
+ a:'대전 중구 중교로 91-15 지하 1층',w:'이색 실내 놀거리',
+ k:'으능정이 신전떡볶이 맞은편 건물 지하.',q:'테크런 대전점'},
+
+/* --- 네이버 저장 목록 --- */
+{n:'옥천뼈구이농민뜨끈이 본점',e:'🍖',la:36.3250119,lo:127.4296660,c:'save',d:'',
+ a:'대전 중구 대흥로 161 1층',w:'감자탕·뼈구이 · 숙소 바로 앞',
+ k:'숙소와 건물이 거의 붙어 있다(4m). 네이버 저장 목록 중 제일 가까운 곳.',q:'옥천뼈구이농민뜨끈이 본점'},
+{n:'카라멜',e:'🍮',la:36.32745,lo:127.42753,c:'save',d:'',
+ a:'대전 중구 대종로 476',w:'성심당 가는 길목',ap:1,
+ k:'네이버 지역검색에 안 잡혀서 도로명 기준 근사 위치다. 실제로는 성심당 바로 앞 골목.',q:'대전 중구 대종로 476'},
+{n:'아리랑주막',e:'🍶',la:36.3296550,lo:127.4271070,c:'save',d:'',
+ a:'대전 중구 목척8길 22',w:'전통주점 · 흠뻑쇼 끝나고 2차 후보',
+ k:'숙소 도보 559m.',q:'아리랑주막'},
+{n:'복수분식 본점',e:'🥟',la:36.3250643,lo:127.4228461,c:'save',d:'',
+ a:'대전 중구 중교로 27',w:'분식 · 로로네 바로 옆',
+ k:'중교로 30(로로네)과 마주 보는 위치. Day2 빵투어에 그대로 끼워 넣을 수 있다.',q:'복수분식 중교로'},
+{n:'고향칼국수',e:'🍲',la:36.3188318,lo:127.4289429,c:'save',d:'',
+ a:'대전 중구 보문로162번길 62 1층',w:'칼국수 · 해장 후보 2',
+ k:'숙소에서 남쪽으로 690m.',q:'대전 중구 고향칼국수'},
+{n:'태화장',e:'🥢',la:36.3338072,lo:127.4293243,c:'save',d:'',
+ a:'대전 동구 중앙로203번길 78',w:'중식 · 대전역 방면',
+ k:'숙소 도보 969m — 걸어갈 수 있는 마지막 거리.',q:'대전 태화장'},
+{n:'오문창순대국밥',e:'🍚',la:36.3592330,lo:127.4265662,c:'save',d:'',
+ a:'대전 대덕구 한밭대로 1153',w:'순대국밥 · 대덕구',
+ k:'숙소에서 3.8km. 차로 가야 한다.',q:'오문창순대국밥'},
+{n:'모선',e:'🍽️',la:36.34075,lo:127.38935,c:'save',d:'',
+ a:'대전 서구 계룡로585번길 24',w:'서구 · 롯데백화점 근처',ap:1,
+ k:'네이버 지역검색에 안 잡혀서 도로명 기준 근사 위치다. 성심당 롯데점(계룡로 598) 바로 건너편쯤.',q:'대전 서구 계룡로585번길 24'},
+{n:'숯불돈까스',e:'🐖',la:36.3463790,lo:127.3882950,c:'save',d:'',
+ a:'대전 서구 문정로 82 1층 103호',w:'돈가스 · 탄방동',
+ k:'숙소에서 4.4km.',q:'대전 숯불돈까스 문정로'},
+{n:'떡반집 본점',e:'🍡',la:36.3522508,lo:127.3749865,c:'save',d:'',
+ a:'대전 서구 둔산로 8 밀레니엄프라자 1층',w:'분식 · 둔산동',
+ k:'숙소에서 5.8km. 둔산 갈 일 있으면.',q:'떡반집 본점'},
+{n:'하쿠류코쿠류 봉명점',e:'🍣',la:36.3583974,lo:127.3464578,c:'save',d:'',
+ a:'대전 유성구 온천북로33번길 35-11 1층',w:'DM 릴스의 그 지점',
+ k:'내가 DM에 보낸 릴스는 이 봉명점이었다. 숙소에서 8.3km라 이번엔 본점(대흥로111번길 42)으로 간다.',
+ r:'https://www.instagram.com/reel/DY4LoUNqtjU/',q:'하쿠류코쿠류 대전봉명점'},
+
+/* --- 인스타 DM · 이번엔 거리상 패스 --- */
+{n:'산도랑',e:'🍓',la:36.3251514,lo:127.4283770,c:'cafe',d:'',
+ a:'대전 중구 대종로452번길 6 101호',w:'과일 산도 · 11:00–20:00 · 휴무 없음',
+ k:'샤망(샤인머스켓+망고) · 멜복 · 후르츠믹스 · 무화과 · 전남친 산도. 숙소 도보 2분인데 플랜에서 빠져 있었다 — 빵투어에 끼워도 좋다.',
+ r:'https://www.instagram.com/reel/Dbhalj1CQqE/',q:'대전 산도랑'},
+{n:'광주서울곱창 봉명점',e:'🥘',la:36.3573100,lo:127.3443344,c:'eat',d:'',
+ a:'대전 유성구 온천북로 7 1층 109호',w:'크림순대국밥 + 직화곱창',
+ k:'나: "배고파 대전가서 맛난거많이먹자". 유성구라 이번엔 무리.',
+ r:'https://www.instagram.com/reel/DaSAVhmIY4N/'},
+{n:'피제리아 다 알리',e:'🍕',la:36.3876779,lo:127.3167789,c:'eat',d:'',
+ a:'대전 유성구 지족로349번길 40-5',w:'나폴리 피자 협회(AVPN) 인증',
+ k:'국내 10곳 중 하나. 지족동이라 숙소에서 제일 먼 편.',q:'피제리아다알리'},
+{n:'안서동야곱집 우송대점',e:'🔥',la:36.3344201,lo:127.4452648,c:'bar',d:'',
+ a:'대전 동구 동대전로131번길 8-5 1층',w:'천안 안서동 막창집의 대전 지점',
+ k:'DM 릴스는 충남대점이었는데 네이버에는 우송대점만 잡힌다. 여긴 대전역 동쪽이라 오히려 오고야·신선칼국수와 묶기 좋다.',
+ r:'https://www.instagram.com/reel/Cy0asbuSaq7/',q:'안서동야곱집 우송대점'},
+{n:'황제닭발숯불꼼장어',e:'🍖',la:36.3462243,lo:127.3921880,c:'bar',d:'',
+ a:'대전 서구 탄방로7번길 33',w:'생연탄 노포 · 현지인 맛집',
+ k:'나: "미쳣다여기". 연탄불 닭목살, 매운 닭발+마요, 참치폭탄 주먹밥. 서구라 이번엔 패스.',
+ r:'https://www.instagram.com/reel/DakR793TUHX/'},
+{n:'초초',e:'🌸',la:36.3526049,lo:127.3711373,c:'bar',d:'',
+ a:'대전 서구 계룡로407번길 56 102호',w:'수비드 안심 · 17:30–01:00 · 일 휴무',
+ k:'희주가 "1박2일 대전 다녀왔는데 대박적인 곳"이라며 공유. 대왕 겹벚꽃(수비드 안심), 백육개장. 일요일 휴무 + 갈마동이라 이번엔 안 맞는다.',
+ r:'https://www.instagram.com/reel/DWlS7jekzLT/',q:'대전 초초 갈마동'},
+{n:'손수베이커리',e:'🥯',la:36.2959818,lo:127.3406649,c:'cafe',d:'',
+ a:'대전 서구 관저동로 42',w:'맘모스빵 성지 · 매일 08:00–22:00',
+ k:'희주가 두 번 보냈다. 초코퍼지맘모스 8,500 / 옥수수맘모찌 7,500. 관저동이라 왕복 1시간.',
+ r:'https://www.instagram.com/reel/DZge7vupxzN/'},
+{n:'시옷기역삐읍 (소금빵집)',e:'🧂',la:36.3552066,lo:127.3776786,c:'cafe',d:'',
+ a:'대전 서구 대덕대로249번길 30 1층',w:'명란에그·연유버터 소금빵',
+ k:'DM엔 "둔산동 이마트 뒤"로만 나왔는데 상호가 시옷기역삐읍(ㅅㄱㅃ) 대전둔산점이다.',
+ r:'https://www.instagram.com/reel/DY6AR5dPZ82/',q:'시옷기역삐읍 대전둔산점'},
+{n:'요모 대전갈마점',e:'🍢',la:36.3472713,lo:127.3699590,c:'bar',d:'',
+ a:'대전 서구 갈마중로8번길 10 1층 106호',w:'꼬치집 · 17:00–익일 01:00',
+ k:'나: "맛있겠다 근데 50분기다리는거 소름".',
+ r:'https://www.instagram.com/reel/DaMcPwYTXjg/'},
+{n:'성심당 DCC점',e:'🥭',la:36.3752845,lo:127.3922447,c:'cafe',d:'',
+ a:'대전 유성구 엑스포로 107',w:'초코망고샌드 (DCC점 한정)',
+ k:'대전신세계에서 도보권이라 유성 가면 묶을 수 있다.',
+ r:'https://www.instagram.com/reel/DYl6lnaSQ-q/'},
+{n:'사시사철 괴정',e:'🦐',la:36.3395479,lo:127.3900712,c:'bar',d:'',
+ a:'대전 서구 도솔로388번길 44 1층',w:'제철 해산물 술집',
+ k:'생새우 + 우니 조합, 보라성게, 가오리찜. 성심당 롯데점 바로 근처 — 롯백 가면 저녁으로 묶을 수 있다.',
+ r:'https://www.instagram.com/reel/Da4MwowhQYj/'},
+{n:'일월육일 관평점',e:'🦑',la:36.4244933,lo:127.3924512,c:'bar',d:'',
+ a:'대전 유성구 관들2길 58 1층',w:'관평동 해산물 성지',
+ k:'생새우무침 + 김·밥 쌈, 오징어통찜, 물회, 1번 뱃살 참치. 대전 북쪽 끝이라 이번엔 무리.',
+ r:'https://www.instagram.com/reel/Dbk25eyP41H/'},
+
+/* --- 참고 --- */
+{n:'대전역',e:'🚉',la:36.33235,lo:127.43420,c:'ref',d:'',
+ a:'대전 동구 중앙로 215',w:'KTX·SRT · 방향 기준점',
+ k:'숙소에서 도보 약 15분. 소제동 카페거리는 여기 동편.',q:'대전역'},
+{n:'서대전역',e:'🚉',la:36.3225754,lo:127.4036880,c:'ref',d:'',
+ a:'대전 중구 오류로 23',w:'603번이 지나는 기준점',
+ k:'으능정이 → 서대전역 → 괴정동 → 목원대 순으로 간다.',q:'서대전역'}
+];
+
+/* 지역 라벨 (축소했을 때만) */
+const AREAS=[
+ {n:'은행·대흥동',la:36.3262,lo:127.4258},
+ {n:'둔산',      la:36.3520,lo:127.3790},
+ {n:'유성·봉명',  la:36.3600,lo:127.3430},
+ {n:'도안',      la:36.3210,lo:127.3400},
+ {n:'괴정·탄방',  la:36.3450,lo:127.3860},
+ {n:'대덕구',     la:36.3650,lo:127.4180},
+ {n:'관저',      la:36.2990,lo:127.3450}
+];
+
+/* 하천 — 개략도 */
+const RIVERS=[
+ {n:'갑천',  p:[[36.2900,127.3450],[36.3050,127.3480],[36.3200,127.3535],[36.3350,127.3605],[36.3500,127.3685],[36.3650,127.3785],[36.3760,127.3878],[36.3860,127.3948],[36.3990,127.4005],[36.4160,127.4055]]},
+ {n:'유등천',p:[[36.2800,127.4020],[36.2950,127.4035],[36.3100,127.4020],[36.3250,127.3995],[36.3400,127.3965],[36.3550,127.3940],[36.3670,127.3930],[36.3780,127.3898]]},
+ {n:'대전천',p:[[36.2870,127.4560],[36.2990,127.4480],[36.3110,127.4408],[36.3230,127.4348],[36.3320,127.4315],[36.3420,127.4255],[36.3530,127.4180],[36.3620,127.4090],[36.3672,127.3985],[36.3688,127.3932]]}
+];
+
+/* 603번 개략 노선 */
+const BUS=[[36.3287849,127.4280310],[36.3225754,127.4036880],[36.3402410,127.3899924],[36.3245749,127.3394577]];
+
+/* ---- 투영 (등거리 근사, 소지역에선 오차 무시 가능) ---- */
+const LAT0=36.345, LON0=127.395;
+const MLAT=111320, MLON=111320*Math.cos(LAT0*Math.PI/180);
+const mx=lo=>(lo-LON0)*MLON, my=la=>-(la-LAT0)*MLAT;
+const HX=mx(HOME.lo), HY=my(HOME.la);
+
+MP.forEach(p=>{
+  p.x=mx(p.lo); p.y=my(p.la);
+  p.dist=Math.round(Math.hypot(p.x-HX,p.y-HY));
+  p.walk=Math.max(1,Math.round(p.dist*1.25/67));
+});
+
+let W=350,H=400, view={cx:HX,cy:HY,k:.34}, sel=null, curFil='all', dragging=false;
+const SX=x=>W/2+(x-view.cx)*view.k, SY=y=>H/2+(y-view.cy)*view.k;
+
+/* ---- SVG 뼈대 ---- */
+function mk(t,at){const e=document.createElementNS(NS,t);for(const k in at)e.setAttribute(k,at[k]);return e;}
+const gBase=mk('g',{}), gRing=mk('g',{}), gPin=mk('g',{});
+svgEl.appendChild(gBase); svgEl.appendChild(gRing); svgEl.appendChild(gPin);
+
+/* 하천 */
+const riverEls=RIVERS.map(r=>{
+  const el=mk('path',{fill:'none',stroke:'#a9cfe8','stroke-width':7,'stroke-linecap':'round','stroke-linejoin':'round',opacity:.75});
+  gBase.appendChild(el);
+  const lb=mk('text',{fill:'#6d9fc0','font-size':10,'font-weight':700,'text-anchor':'middle'});
+  lb.textContent=r.n; gBase.appendChild(lb);
+  return {r:r,el:el,lb:lb};
+});
+/* 버스 */
+const busEl=mk('path',{fill:'none',stroke:'#e0384f','stroke-width':2,'stroke-dasharray':'7 5',opacity:.5,'stroke-linecap':'round'});
+gBase.appendChild(busEl);
+const busLb=mk('text',{fill:'#c02a40','font-size':9.5,'font-weight':800,'text-anchor':'middle'});
+busLb.textContent='603번 (개략)'; gBase.appendChild(busLb);
+/* 지역 라벨 */
+const areaEls=AREAS.map(a=>{
+  const t=mk('text',{fill:'#8b98ad','font-size':11,'font-weight':800,'text-anchor':'middle','letter-spacing':'-.3'});
+  t.textContent=a.n; gBase.appendChild(t); return {a:a,t:t};
+});
+/* 거리 링 */
+const RINGS=[250,500,1000,2000,5000];
+const ringEls=RINGS.map(m=>{
+  const c=mk('circle',{fill:'none',stroke:'#c3cede','stroke-width':1,'stroke-dasharray':'3 4'});
+  gRing.appendChild(c);
+  const t=mk('text',{fill:'#9aa5b8','font-size':9,'font-weight':700,'text-anchor':'middle'});
+  t.textContent=m>=1000?(m/1000)+'km':m+'m'; gRing.appendChild(t);
+  return {m:m,c:c,t:t};
+});
+
+/* 핀 */
+MP.forEach(p=>{
+  const col=MCAT[p.c].c, big=p.c==='core';
+  const g=mk('g',{class:'pinG',cursor:'pointer'});
+  const hit=mk('circle',{r:big?21:16,fill:'transparent'});
+  const halo=mk('circle',{r:big?18:0,fill:col,opacity:.16});
+  const dot=mk('circle',{r:big?14:10,fill:col,stroke:'#fff','stroke-width':big?2.5:2});
+  const em=mk('text',{'text-anchor':'middle','font-size':big?15:10.5,dy:big?5.4:3.8});
+  em.textContent=p.e;
+  const lb=mk('text',{'text-anchor':'middle','font-size':big?11:9.6,'font-weight':800,
+    fill:'#22304a',stroke:'#fff','stroke-width':3,'paint-order':'stroke',dy:big?-24:-19,'letter-spacing':'-.3'});
+  lb.textContent=p.n;
+  g.appendChild(halo); g.appendChild(hit); g.appendChild(dot); g.appendChild(em); g.appendChild(lb);
+  g.addEventListener('click',ev=>{ev.stopPropagation(); pick(p);});
+  gPin.appendChild(g);
+  p.g=g; p.dot=dot; p.halo=halo; p.lb=lb; p.em=em;
+});
+/* z-order: 참고 → 일반 → 일정 → 핵심 순으로 다시 붙여 핵심 핀이 맨 위 */
+MP.slice().sort((a,b)=>{
+  const s=p=>p.c==='ref'?0:(p.c==='save'?1:(p.d?3:2))+(p.c==='core'?10:0);
+  return s(a)-s(b);
+}).forEach(p=>gPin.appendChild(p.g));
+
+/* ---- 그리기 ---- */
+function visible(p){
+  if(curFil==='all') return true;
+  if(curFil==='D1'||curFil==='D2') return p.c==='core'||(p.d||'').indexOf(curFil)===0;
+  return p.c===curFil;
+}
+/* 한글은 거의 전각, 영문·숫자는 반각 — 라벨 폭 추정 */
+function lblW(s,fs){
+  let u=0;
+  for(const ch of s){ const c=ch.codePointAt(0);
+    u += c>0x2000 ? .96 : (ch===' ' ? .32 : .56); }
+  return Math.max(14, u*fs - s.length*.3 + 8);
+}
+function pathOf(pts){return pts.map((q,i)=>(i?'L':'M')+SX(mx(q[1])).toFixed(1)+' '+SY(my(q[0])).toFixed(1)).join(' ');}
+
+function draw(fast){
+  const k=view.k;
+  /* 하천 */
+  const showRiver=k<.9;
+  riverEls.forEach(o=>{
+    o.el.setAttribute('d',pathOf(o.r.p));
+    o.el.setAttribute('stroke-width',Math.max(2.5,Math.min(11,k*260)));
+    o.el.style.display=showRiver?'':'none';
+    const midp=o.r.p[Math.floor(o.r.p.length/2)];
+    o.lb.setAttribute('x',SX(mx(midp[1]))); o.lb.setAttribute('y',SY(my(midp[0]))-9);
+    o.lb.style.display=(showRiver&&k<.25)?'':'none';
+  });
+  /* 버스 */
+  const showBus=k<.25;
+  busEl.setAttribute('d',pathOf(BUS)); busEl.style.display=showBus?'':'none';
+  busLb.setAttribute('x',(SX(mx(BUS[1][1]))+SX(mx(BUS[2][1])))/2);
+  busLb.setAttribute('y',(SY(my(BUS[1][0]))+SY(my(BUS[2][0])))/2-7);
+  busLb.style.display=showBus?'':'none';
+  /* 지역명 */
+  areaEls.forEach(o=>{
+    o.t.setAttribute('x',SX(mx(o.a.lo))); o.t.setAttribute('y',SY(my(o.a.la)));
+    o.t.style.display=k<.16?'':'none';
+  });
+  /* 거리 링 */
+  const hx=SX(HX), hy=SY(HY);
+  ringEls.forEach(o=>{
+    const r=o.m*k;
+    const on=r>26&&r<2600;
+    o.c.style.display=on?'':'none'; o.t.style.display=on?'':'none';
+    if(on){o.c.setAttribute('cx',hx);o.c.setAttribute('cy',hy);o.c.setAttribute('r',r.toFixed(1));
+      o.t.setAttribute('x',hx);o.t.setAttribute('y',(hy-r+11).toFixed(1));}
+  });
+  /* 핀 — 1차: 위치 배치 / 2차: 라벨 (핀·라벨 모두와 충돌 검사) */
+  const boxes=[], shown=[];
+  const order=MP.slice().sort((a,b)=>{
+    const s=p=>p===sel?0:(p.c==='core'?1:(p.d?2:(p.c==='ref'?4:3)));
+    return s(a)-s(b);
+  });
+  order.forEach(p=>{
+    const on=visible(p);
+    if(!on){ p.g.style.display='none'; return; }
+    const x=SX(p.x), y=SY(p.y);
+    if(x<-40||x>W+40||y<-40||y>H+40){ p.g.style.display='none'; return; }
+    p.g.style.display='';
+    p.g.setAttribute('transform','translate('+x.toFixed(1)+','+y.toFixed(1)+')');
+    const isSel=p===sel, core=p.c==='core';
+    const rr=core?14:(isSel?12:10);
+    p.dot.setAttribute('r', rr);
+    p.dot.setAttribute('stroke', isSel?'#12386b':'#fff');
+    p.dot.setAttribute('stroke-width', isSel?3:(core?2.5:2));
+    p.halo.setAttribute('r', core?18:(isSel?20:0));
+    boxes.push([x-rr-1,y-rr-1,x+rr+1,y+rr+1,p]);
+    shown.push({p:p,x:x,y:y,sel:isSel,core:core});
+    if(isSel&&p.g.nextSibling) gPin.appendChild(p.g);
+  });
+  shown.forEach(o=>{
+    const p=o.p, lb=p.lb, must=o.core||o.sel;
+    if(!must && (fast || k<=.09)){ lb.style.display='none'; return; }
+    const fs=o.core?11:9.6, w=lblW(p.n,fs), rr=o.core?14:(o.sel?12:10);
+    /* 위 → 오른쪽 → 왼쪽 → 아래 순으로 빈 자리를 찾는다 */
+    const cands=[{a:'middle',dx:0,dy:-(rr+10)},{a:'start',dx:rr+6,dy:fs*.36},
+                 {a:'end',dx:-(rr+6),dy:fs*.36},{a:'middle',dx:0,dy:rr+fs+4}];
+    let got=null;
+    for(const c of cands){
+      const base=o.y+c.dy;
+      const x0 = c.a==='middle' ? o.x-w/2 : (c.a==='start' ? o.x+c.dx : o.x+c.dx-w);
+      const bx=[x0-2, base-fs*.9, x0+w+2, base+fs*.28];
+      if(bx[0]<3||bx[2]>W-3||bx[1]<2||bx[3]>H-2) continue;
+      if(boxes.some(b=>b[4]!==p && bx[0]<b[2]+2&&bx[2]>b[0]-2&&bx[1]<b[3]+2&&bx[3]>b[1]-2)) continue;
+      got={c:c,bx:bx}; break;
+    }
+    if(!got && must){   /* 숙소·공연·선택된 핀은 겹쳐도 무조건 표시 */
+      const a = o.x<w/2+10 ? 'start' : (o.x>W-w/2-10 ? 'end' : 'middle');
+      got={c:{a:a, dx:(a==='start'?10-o.x:(a==='end'?W-10-o.x:0)), dy:-(rr+10)}, bx:null};
+    }
+    if(!got){ lb.style.display='none'; return; }
+    lb.setAttribute('text-anchor',got.c.a);
+    lb.setAttribute('dx',got.c.dx.toFixed(1));
+    lb.setAttribute('dy',got.c.dy.toFixed(1));
+    lb.style.display='';
+    if(got.bx){ got.bx.push(p); boxes.push(got.bx); }
+  });
+  /* 축척 */
+  const cand=[10,20,50,100,200,300,500,1000,2000,5000];
+  let bestv=cand[0];
+  for(const c of cand){ if(c*k<=46) bestv=c; }
+  document.getElementById('mScaleTxt').textContent=(bestv>=1000?(bestv/1000)+'km':bestv+'m');
+  document.querySelector('.mscale i').style.width=Math.round(bestv*k)+'px';
+}
+
+/* ---- 정보 패널 ---- */
+function pick(p){
+  sel=p;
+  const col=MCAT[p.c].c;
+  const tags=['<span style="background:'+col+'">'+MCAT[p.c].n+'</span>'];
+  if(p.d) tags.push('<span style="background:'+(DCOL[p.d]||'#6b7487')+'">'+p.d+'</span>');
+  if(p.c!=='core') tags.push('<span style="background:#eef2fa;color:#41506b">숙소에서 '
+    +(p.dist<1000?p.dist+'m':(p.dist/1000).toFixed(1)+'km')
+    +(p.dist<1500?' · 도보 '+p.walk+'분':'')+'</span>');
+  if(p.ap) tags.push('<span style="background:#f0a13a">위치 근사</span>');
+  let h='<div class="mih"><div class="mie">'+p.e+'</div><div class="mit">'
+   +'<b>'+p.n+'</b><p>'+p.w+'</p>'
+   +'<p style="margin-top:4px">📍 '+p.a+'</p>'
+   +'<div class="mtags">'+tags.join('')+'</div></div></div>';
+  if(p.k) h+='<div class="mnote">'+p.k+'</div>';
+  h+='<div class="iglnk"><a href="https://map.naver.com/p/search/'+encodeURIComponent(p.q||p.n)+'" target="_blank">🗺️ 네이버 지도</a>'
+   +(p.r?'<a href="'+p.r+'" target="_blank">📸 릴스</a>':'')
+   +'</div>';
+  document.getElementById('mInfo').innerHTML=h;
+  draw();
+}
+function focusOn(p,k){
+  view.cx=p.x; view.cy=p.y; if(k) view.k=k;
+  setViewBtn(null); pick(p);
+  document.getElementById('mapWrap').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+/* ---- 뷰 프리셋 ---- */
+function fit(list,pad){
+  if(!list.length) return;
+  let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;
+  list.forEach(p=>{x0=Math.min(x0,p.x);x1=Math.max(x1,p.x);y0=Math.min(y0,p.y);y1=Math.max(y1,p.y);});
+  const w=Math.max(x1-x0,120), h=Math.max(y1-y0,120);
+  view.k=Math.min((W-pad*2)/w,(H-pad*2)/h);
+  view.k=Math.max(.012,Math.min(3,view.k));
+  view.cx=(x0+x1)/2; view.cy=(y0+y1)/2;
+}
+const VIEWS={
+  old:()=>{ fit(MP.filter(p=>p.dist<620),30); },
+  show:()=>{ fit(MP.filter(p=>p.c==='core'),58); },
+  all:()=>{ fit(MP,34); }
+};
+function setViewBtn(v){
+  document.querySelectorAll('.mctl.view button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
+}
+document.querySelectorAll('.mctl.view button').forEach(b=>{
+  b.addEventListener('click',()=>{ VIEWS[b.dataset.v](); setViewBtn(b.dataset.v); draw(); });
+});
+document.querySelectorAll('.mctl.zoom button').forEach(b=>{
+  b.addEventListener('click',()=>{ zoomAt(W/2,H/2, b.dataset.z==='in'?1.6:1/1.6); setViewBtn(null); });
+});
+function zoomAt(px,py,f){
+  const nk=Math.max(.012,Math.min(3,view.k*f));
+  const wx=view.cx+(px-W/2)/view.k, wy=view.cy+(py-H/2)/view.k;
+  view.k=nk; view.cx=wx-(px-W/2)/nk; view.cy=wy-(py-H/2)/nk;
+  draw();
+}
+
+/* ---- 필터 ---- */
+const FILS=[['all','전체'],['D1','1일차'],['D2','2일차'],['core','🏠 핵심'],
+ ['eat','🍽️ 맛집'],['cafe','☕ 카페·빵'],['bar','🍶 술집'],['play','🎪 놀거리'],
+ ['move','🚌 이동'],['save','📌 저장']];
+document.getElementById('mFil').innerHTML=FILS.map(f=>
+ '<button data-f="'+f[0]+'"'+(f[0]==='all'?' class="on"':'')+'>'+f[1]+'</button>').join('');
+document.querySelectorAll('#mFil button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('#mFil button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); curFil=b.dataset.f; draw();
+  });
+});
+
+/* ---- 범례 ---- */
+document.getElementById('mLeg').innerHTML=
+ Object.keys(MCAT).map(k=>'<span><i style="background:'+MCAT[k].c+'"></i>'+MCAT[k].n+'</span>').join('')
+ +'<span style="color:#6d9fc0">〰️ 하천(개략)</span><span style="color:#c02a40">┈ 603번(개략)</span>';
+
+/* ---- 거리 목록 ---- */
+(function(){
+  const rows=MP.filter(p=>p.c!=='core').slice().sort((a,b)=>a.dist-b.dist);
+  const row=p=>'<div class="drow" data-n="'+encodeURIComponent(p.n)+'">'
+    +'<span class="de">'+p.e+'</span><span class="dn">'+p.n+'</span>'
+    +'<span class="dd">'+(p.dist<1000?p.dist+'m':(p.dist/1000).toFixed(1)+'km')+'</span>'
+    +'<span class="dw">'+(p.dist<1500?'도보 '+p.walk+'분':'차 이동')+'</span></div>';
+  const wk=rows.filter(p=>p.dist<1200), dr=rows.filter(p=>p.dist>=1200);
+  document.getElementById('mDistWalk').innerHTML=wk.map(row).join('');
+  document.getElementById('mDistDrive').innerHTML=dr.map(row).join('');
+  document.getElementById('mCntWalk').textContent=wk.length+'곳';
+  document.getElementById('mCntDrive').textContent=dr.length+'곳';
+  document.querySelectorAll('.drow').forEach(d=>{
+    d.addEventListener('click',()=>{
+      const p=MP.find(q=>q.n===decodeURIComponent(d.dataset.n));
+      if(p) focusOn(p,Math.max(view.k,.5));
+    });
+  });
+})();
+
+/* ---- 제스처 ---- */
+const pts=new Map(); let last=null, pinch=null, moved=0, downT=0;
+function rel(e){const r=svgEl.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}
+svgEl.addEventListener('pointerdown',e=>{
+  const hn=document.getElementById('mHint'); if(hn) hn.style.display='none';
+  svgEl.setPointerCapture(e.pointerId); pts.set(e.pointerId,rel(e));
+  moved=0; downT=Date.now();
+  if(pts.size===1){last=rel(e); dragging=true; svgEl.classList.add('drag');}
+  else if(pts.size===2){const a=[...pts.values()];pinch={d:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y),
+    mx:(a[0].x+a[1].x)/2,my:(a[0].y+a[1].y)/2};}
+});
+svgEl.addEventListener('pointermove',e=>{
+  if(!pts.has(e.pointerId))return;
+  const p=rel(e); pts.set(e.pointerId,p);
+  if(pts.size===2&&pinch){
+    const a=[...pts.values()], d=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y);
+    if(pinch.d>4){ zoomAt(pinch.mx,pinch.my,d/pinch.d); setViewBtn(null); }
+    pinch.d=d; pinch.mx=(a[0].x+a[1].x)/2; pinch.my=(a[0].y+a[1].y)/2;
+    moved=99; return;
+  }
+  if(dragging&&last){
+    const dx=p.x-last.x, dy=p.y-last.y; moved+=Math.abs(dx)+Math.abs(dy);
+    view.cx-=dx/view.k; view.cy-=dy/view.k; last=p; setViewBtn(null); draw(true);
+  }
+});
+function up(e){
+  pts.delete(e.pointerId);
+  if(pts.size<2)pinch=null;
+  if(pts.size===0){dragging=false;last=null;svgEl.classList.remove('drag');draw();}
+  else last=[...pts.values()][0];
+}
+svgEl.addEventListener('pointerup',up); svgEl.addEventListener('pointercancel',up);
+svgEl.addEventListener('wheel',e=>{e.preventDefault();const p=rel(e);
+  zoomAt(p.x,p.y,e.deltaY<0?1.18:1/1.18); setViewBtn(null);},{passive:false});
+svgEl.addEventListener('dblclick',e=>{const p=rel(e);zoomAt(p.x,p.y,1.9);setViewBtn(null);});
+
+/* ---- 리사이즈 / 초기화 ---- */
+let inited=false;
+function resize(){
+  const w=svgEl.clientWidth, h=svgEl.clientHeight;
+  if(!w||!h) return false;
+  W=w;H=h; svgEl.setAttribute('viewBox','0 0 '+W+' '+H);
+  return true;
+}
+function init(){
+  if(inited) return;
+  if(!resize()) return;
+  inited=true; VIEWS.old(); setViewBtn('old'); draw();
+}
+window.addEventListener('resize',()=>{ if(resize()) draw(); });
+document.querySelector('nav button[data-t="map"]').addEventListener('click',()=>{
+  setTimeout(init,30);
+});
+if(document.getElementById('map').classList.contains('on')) setTimeout(init,30);
+
+window.__mapFocus=function(name){
+  const p=MP.find(q=>q.n===name); if(!p)return;
+  document.querySelector('nav button[data-t="map"]').click();
+  setTimeout(()=>{init();focusOn(p,Math.max(view.k,.5));},60);
+};
+})();
+
 </script>
 </body>
 </html>
