@@ -158,24 +158,42 @@ a.blk{display:block; text-align:center; background:var(--navy); color:#fff; text
 
 /* 지도 */
 .mapwrap{position:relative; border:1px solid var(--line); border-radius:14px; overflow:hidden;
-  background:#e9eff7;}
-#mapSvg{display:block; width:100%; height:58vh; min-height:340px; max-height:520px;
+  background:#f2efe9; height:58vh; min-height:340px; max-height:540px;
   touch-action:none; cursor:grab;}
-#mapSvg.drag{cursor:grabbing;}
+.mapwrap.drag{cursor:grabbing;}
+#mapTiles{position:absolute; inset:0; overflow:hidden; z-index:1; isolation:isolate;}
+#mapTiles img{position:absolute; display:block; pointer-events:none;
+  -webkit-user-drag:none; user-select:none;}
+#mapSvg{position:absolute; inset:0; width:100%; height:100%; z-index:2;}
 .mctl{position:absolute; display:flex; gap:5px; z-index:3;}
 .mctl.view{left:8px; top:8px;}
-.mctl.zoom{right:8px; top:8px; flex-direction:column;}
+.mctl.zoom{right:8px; top:8px; flex-direction:column; align-items:flex-end;}
 .mctl button{border:1px solid #cfd8e8; background:rgba(255,255,255,.94); color:var(--navy);
   font-family:inherit; font-weight:800; font-size:11px; border-radius:9px; padding:7px 8px;
   cursor:pointer; box-shadow:0 1px 4px rgba(18,40,80,.13); letter-spacing:-.3px; white-space:nowrap;}
 .mctl.zoom button{width:33px; height:33px; font-size:18px; padding:0; line-height:1;}
+.mctl.zoom button.sty{width:auto; height:auto; padding:5px 6px; font-size:9.8px; line-height:1.25;}
+#mLoc.on{background:#2f6fdd; border-color:#2f6fdd; box-shadow:0 0 0 3px rgba(47,111,221,.22);}
+#mLoc.busy{animation:mpulse 1s ease-in-out infinite;}
+@keyframes mpulse{0%,100%{opacity:1}50%{opacity:.42}}
 .mctl button.on{background:var(--navy); color:#fff; border-color:var(--navy);}
 .mscale{position:absolute; left:9px; bottom:9px; z-index:3; font-size:10.5px; font-weight:800;
   color:#41506b; background:rgba(255,255,255,.88); border-radius:7px; padding:4px 8px;
   display:flex; align-items:center; gap:7px;}
 .mscale i{display:block; height:6px; border:1.5px solid #41506b; border-top:none; width:46px;}
-.mhint{position:absolute; right:9px; bottom:9px; z-index:3; font-size:10.5px; color:#5a6579;
+.mhint{position:absolute; right:9px; bottom:24px; z-index:3; font-size:10.5px; color:#5a6579;
   background:rgba(255,255,255,.88); border-radius:7px; padding:4px 8px; font-weight:700;}
+.matt{position:absolute; right:0; bottom:0; z-index:4; font-size:8.5px; color:#5a6579;
+  background:rgba(255,255,255,.8); padding:2px 5px 1px; border-radius:6px 0 0 0; letter-spacing:-.2px;}
+
+.mecard{margin-top:11px; border:1px solid #c9dcf7; background:#f2f7ff; border-radius:12px; padding:11px 12px;}
+.mecard.warn{border-color:#f5cfcf; background:#fff2f2;}
+.mecard b{font-size:13px;}
+.mecard i{font-style:normal; font-size:10.5px; color:var(--sub); font-weight:700; margin-left:5px;}
+.mecard p{font-size:12px; margin-top:5px; color:#39435a; line-height:1.6;}
+.mecard .nr{display:flex; gap:5px; flex-wrap:wrap; margin-top:7px;}
+.mecard .nr span{font-size:11px; font-weight:700; background:#fff; border:1px solid #cfdcef;
+  border-radius:999px; padding:3px 9px; cursor:pointer; color:#2f6fdd;}
 
 .mfil{display:flex; gap:5px; flex-wrap:wrap; margin-bottom:11px;}
 .mfil button{border:1px solid var(--line); background:var(--card); color:var(--sub);
@@ -683,11 +701,12 @@ a.blk{display:block; text-align:center; background:var(--navy); color:#fff; text
 
   <div class="card" style="padding:15px 12px 16px">
     <h2 style="padding:0 4px"><span class="em">🗺️</span> 대전 지도</h2>
-    <div class="cap" style="padding:0 4px"><b>🏠 숙소</b>와 <b>💦 목원대</b>가 기준. 플랜에 나온 장소를 전부 찍어놨어 — <b>핀을 탭하면</b> 바로 아래에 정보가 뜬다.</div>
+    <div class="cap" style="padding:0 4px">실제 지도 위에 <b>🏠 숙소</b>·<b>💦 목원대</b>를 기준으로 플랜의 모든 장소를 찍었어. <b>핀을 탭하면</b> 아래에 정보가 뜨고, <b>📍 버튼</b>을 누르면 지금 내 위치까지 같이 나온다.</div>
 
     <div class="mfil" id="mFil"></div>
 
     <div class="mapwrap" id="mapWrap">
+      <div id="mapTiles"></div>
       <svg id="mapSvg" xmlns="http://www.w3.org/2000/svg"></svg>
       <div class="mctl view">
         <button data-v="old" class="on">원도심</button>
@@ -697,12 +716,16 @@ a.blk{display:block; text-align:center; background:var(--navy); color:#fff; text
       <div class="mctl zoom">
         <button data-z="in" aria-label="확대">+</button>
         <button data-z="out" aria-label="축소">−</button>
+        <button id="mLoc" aria-label="내 위치">📍</button>
+        <button id="mStyle" class="sty" aria-label="지도 스타일">자세히</button>
       </div>
       <div class="mscale"><i></i><b id="mScaleTxt">500m</b></div>
       <div class="mhint" id="mHint">드래그 · 핀치 확대</div>
+      <div class="matt" id="mAttr"></div>
     </div>
 
-    <div id="mInfo"><div class="empty">지도에서 핀을 탭해봐 👆</div></div>
+    <div id="mMe"></div>
+    <div id="mInfo"><div class="empty">지도에서 핀을 탭해봐 👆<br><span style="font-size:11px">오른쪽 <b>📍</b> 버튼을 누르면 지금 내 위치도 나와</span></div></div>
 
     <div class="mleg" id="mLeg"></div>
   </div>
@@ -719,8 +742,12 @@ a.blk{display:block; text-align:center; background:var(--navy); color:#fff; text
   <div class="card">
     <h2><span class="em">ℹ️</span> 이 지도에 대해</h2>
     <div class="cap">읽고 쓰면 훨씬 편해진다</div>
-    <div class="okbox">📍 <b>핀 위치는 실제 좌표다.</b> 네이버 지역검색에서 받은 위경도를 그대로 찍었고, 거리·축척도 실제 값이다. 핀끼리의 거리 관계는 믿어도 된다.</div>
-    <div class="warnbox">🖍️ <b>하천·603번 노선·지역 이름은 개략도다.</b> 방향을 잡으라고 단순하게 그린 선이지 실제 물길·버스 경로가 아니다. <b>길 찾기는 각 핀의 "네이버 지도" 버튼</b>으로.</div>
+    <div class="okbox">📍 <b>핀 위치는 실제 좌표다.</b> 네이버 지역검색에서 받은 위경도를 그대로 찍었고, 거리·축척도 실제 값이다.</div>
+    <div class="okbox">📱 <b>내 위치 쓰는 법</b> — 지도 오른쪽 <b>📍</b> 버튼 → 권한 요청이 뜨면 <b>허용</b>. 파란 점으로 표시되고, 숙소·목원대까지 남은 거리와 가장 가까운 장소 3곳이 뜬다. 핀을 고르면 <b>내 위치에서 몇 m</b>인지도 같이 나온다.<br>
+    <span style="font-size:11px">※ 깃허브 주소(https)로 열어야 작동한다. 파일로 열면 브라우저가 위치를 막는다.</span></div>
+    <div class="warnbox">🗺️ <b>배경 지도는 OpenStreetMap이다.</b> 네이버 지도 API는 네이버 클라우드에서 발급받은 키가 있어야 쓸 수 있어서 대신 넣었다. 한글 도로명·건물명은 그대로 나온다. 오른쪽 <b>자세히</b> 버튼을 누르면 상세한 지도로 바뀐다.<br>
+    <span style="font-size:11px">※ 실제 길찾기는 각 핀의 <b>"네이버 지도에서 열기"</b>로. 빨간 점선 603번 노선은 방향 참고용 개략선이다.</span></div>
+    <div class="warnbox">📶 <b>배경 지도는 인터넷이 있어야 뜬다.</b> 데이터가 안 터지면 지도는 비지만 <b>핀·거리 링·거리 목록은 그대로</b> 보인다.</div>
     <div class="okbox">🎯 <b>보는 법</b><br>
     · <b>원도심</b> — 숙소 걸어서 갈 수 있는 범위. 대부분 일정이 여기 몰려 있다<br>
     · <b>숙소↔공연</b> — 숙소에서 목원대까지 8.1km가 한눈에<br>
@@ -1510,13 +1537,25 @@ document.querySelectorAll('.igseg button').forEach(b=>b.addEventListener('click'
   b.classList.add('on'); curBy=b.dataset.by; curLoc='all'; renderLocs(); renderList();
 }));
 renderLocs(); renderList();
-/* ================= 지도 ================= */
+/* ================= 지도 (실제 지도 타일 + 내 위치) ================= */
 (function(){
 const svgEl=document.getElementById('mapSvg');
 if(!svgEl) return;
 const NS='http://www.w3.org/2000/svg';
+const tileLayer=document.getElementById('mapTiles');
+const wrap=document.getElementById('mapWrap');
 
 const HOME={la:36.32498, lo:127.42960};
+
+/* 타일 소스 — 네이버 지도는 발급받은 클라이언트 키가 있어야 해서 OSM 계열을 쓴다.
+   둘 다 한글 도로명·건물명이 나온다. */
+const TILES=[
+ {n:'기본',   u:'https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png',
+  at:'© OpenStreetMap · © CARTO', bg:'#f2efe9'},
+ {n:'자세히', u:'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+  at:'© OpenStreetMap contributors', bg:'#e8e0d8'}
+];
+let tsi=0;
 
 /* 카테고리 */
 const MCAT={
@@ -1738,164 +1777,185 @@ const MP=[
  k:'으능정이 → 서대전역 → 괴정동 → 목원대 순으로 간다.',q:'서대전역'}
 ];
 
-/* 지역 라벨 (축소했을 때만) */
-const AREAS=[
- {n:'은행·대흥동',la:36.3262,lo:127.4258},
- {n:'둔산',      la:36.3520,lo:127.3790},
- {n:'유성·봉명',  la:36.3600,lo:127.3430},
- {n:'도안',      la:36.3210,lo:127.3400},
- {n:'괴정·탄방',  la:36.3450,lo:127.3860},
- {n:'대덕구',     la:36.3650,lo:127.4180},
- {n:'관저',      la:36.2990,lo:127.3450}
-];
 
-/* 하천 — 개략도 */
-const RIVERS=[
- {n:'갑천',  p:[[36.2900,127.3450],[36.3050,127.3480],[36.3200,127.3535],[36.3350,127.3605],[36.3500,127.3685],[36.3650,127.3785],[36.3760,127.3878],[36.3860,127.3948],[36.3990,127.4005],[36.4160,127.4055]]},
- {n:'유등천',p:[[36.2800,127.4020],[36.2950,127.4035],[36.3100,127.4020],[36.3250,127.3995],[36.3400,127.3965],[36.3550,127.3940],[36.3670,127.3930],[36.3780,127.3898]]},
- {n:'대전천',p:[[36.2870,127.4560],[36.2990,127.4480],[36.3110,127.4408],[36.3230,127.4348],[36.3320,127.4315],[36.3420,127.4255],[36.3530,127.4180],[36.3620,127.4090],[36.3672,127.3985],[36.3688,127.3932]]}
-];
-
-/* 603번 개략 노선 */
+/* 603번 개략 노선 (실제 경로가 아니라 방향 참고용) */
 const BUS=[[36.3287849,127.4280310],[36.3225754,127.4036880],[36.3402410,127.3899924],[36.3245749,127.3394577]];
 
-/* ---- 투영 (등거리 근사, 소지역에선 오차 무시 가능) ---- */
-const LAT0=36.345, LON0=127.395;
-const MLAT=111320, MLON=111320*Math.cos(LAT0*Math.PI/180);
-const mx=lo=>(lo-LON0)*MLON, my=la=>-(la-LAT0)*MLAT;
-const HX=mx(HOME.lo), HY=my(HOME.la);
+/* ---- 웹 메르카토르 ---- */
+const prX=lo=>(lo+180)/360;
+const prY=la=>{const s=Math.sin(la*Math.PI/180); return .5-Math.log((1+s)/(1-s))/(4*Math.PI);};
+const LAT0=36.34, MLAT=111320, MLON=111320*Math.cos(LAT0*Math.PI/180);
+const WORLD_M=40075016.686*Math.cos(LAT0*Math.PI/180);   /* 이 위도에서 지도 한 바퀴 = 몇 m */
+const distM=(la1,lo1,la2,lo2)=>Math.round(Math.hypot((lo2-lo1)*MLON,(la2-la1)*MLAT));
+const fmtD=m=>m<1000?m+'m':(m/1000).toFixed(1)+'km';
 
 MP.forEach(p=>{
-  p.x=mx(p.lo); p.y=my(p.la);
-  p.dist=Math.round(Math.hypot(p.x-HX,p.y-HY));
+  p.u=prX(p.lo); p.v=prY(p.la);
+  p.dist=distM(HOME.la,HOME.lo,p.la,p.lo);
   p.walk=Math.max(1,Math.round(p.dist*1.25/67));
 });
+const HU=prX(HOME.lo), HV=prY(HOME.la);
 
-let W=350,H=400, view={cx:HX,cy:HY,k:.34}, sel=null, curFil='all', dragging=false;
-const SX=x=>W/2+(x-view.cx)*view.k, SY=y=>H/2+(y-view.cy)*view.k;
-
-/* ---- SVG 뼈대 ---- */
+let W=323, H=471, sel=null, curFil='all', me=null, noClick=false, watchId=null, meFirst=true;
+let view={cx:HU, cy:HV, S:14e6};
+const S_MIN=200000, S_MAX=90e6;
+const SX=u=>W/2+(u-view.cx)*view.S, SY=v=>H/2+(v-view.cy)*view.S;
+const kOf=()=>view.S/WORLD_M;                     /* 화면 1px = 몇 m 의 역수 */
 function mk(t,at){const e=document.createElementNS(NS,t);for(const k in at)e.setAttribute(k,at[k]);return e;}
-const gBase=mk('g',{}), gRing=mk('g',{}), gPin=mk('g',{});
-svgEl.appendChild(gBase); svgEl.appendChild(gRing); svgEl.appendChild(gPin);
 
-/* 하천 */
-const riverEls=RIVERS.map(r=>{
-  const el=mk('path',{fill:'none',stroke:'#a9cfe8','stroke-width':7,'stroke-linecap':'round','stroke-linejoin':'round',opacity:.75});
-  gBase.appendChild(el);
-  const lb=mk('text',{fill:'#6d9fc0','font-size':10,'font-weight':700,'text-anchor':'middle'});
-  lb.textContent=r.n; gBase.appendChild(lb);
-  return {r:r,el:el,lb:lb};
-});
-/* 버스 */
-const busEl=mk('path',{fill:'none',stroke:'#e0384f','stroke-width':2,'stroke-dasharray':'7 5',opacity:.5,'stroke-linecap':'round'});
+/* ---------- 타일 ---------- */
+const tiles={};
+function drawTiles(){
+  const src=TILES[tsi];
+  tileLayer.style.background=src.bg;
+  const z=Math.max(11,Math.min(18,Math.round(Math.log2(view.S/256))));
+  const n=Math.pow(2,z);
+  const u0=view.cx-(W/2)/view.S, v0=view.cy-(H/2)/view.S;
+  const u1=u0+W/view.S,          v1=v0+H/view.S;
+  const need={};
+  let allReady=true;
+  for(let x=Math.floor(u0*n); x<=Math.floor(u1*n); x++){
+    for(let y=Math.floor(v0*n); y<=Math.floor(v1*n); y++){
+      if(y<0||y>=n) continue;
+      const xx=((x%n)+n)%n, key=tsi+':'+z+'/'+xx+'/'+y;
+      need[key]=1;
+      let im=tiles[key];
+      if(!im){
+        im=new Image(); im.tz=z; im.tx=x; im.ty=y; im.alt='';
+        im.onerror=()=>{im.style.visibility='hidden';};
+        im.src=src.u.replace('{z}',z).replace('{x}',xx).replace('{y}',y);
+        tileLayer.appendChild(im); tiles[key]=im;
+      }
+      if(!im.complete) allReady=false;
+    }
+  }
+  /* 배치 — 예전 줌의 타일도 자기 좌표대로 다시 놓아서 빈 화면을 막는다 */
+  for(const key in tiles){
+    const im=tiles[key], n2=Math.pow(2,im.tz), sz=view.S/n2;
+    const L=W/2+(im.tx/n2-view.cx)*view.S, T=H/2+(im.ty/n2-view.cy)*view.S;
+    if(L>W+2||T>H+2||L+sz<-2||T+sz<-2||key.charAt(0)!=String(tsi)
+       ||(allReady&&im.tz!==z)||Math.abs(im.tz-z)>2){
+      im.remove(); delete tiles[key]; continue;
+    }
+    im.style.left=Math.floor(L)+'px'; im.style.top=Math.floor(T)+'px';
+    im.style.width=im.style.height=Math.ceil(sz)+'px';
+    im.style.zIndex=im.tz===z?2:1;
+  }
+}
+
+/* ---------- 오버레이 ---------- */
+const gBase=mk('g',{}), gRing=mk('g',{}), gPin=mk('g',{}), gMe=mk('g',{});
+[gBase,gRing,gPin,gMe].forEach(g=>svgEl.appendChild(g));
+
+const busEl=mk('path',{fill:'none',stroke:'#e0384f','stroke-width':2.5,'stroke-dasharray':'8 6',
+  opacity:.62,'stroke-linecap':'round'});
 gBase.appendChild(busEl);
-const busLb=mk('text',{fill:'#c02a40','font-size':9.5,'font-weight':800,'text-anchor':'middle'});
+const busLb=mk('text',{fill:'#c02a40','font-size':10,'font-weight':800,'text-anchor':'middle',
+  stroke:'#fff','stroke-width':3,'paint-order':'stroke'});
 busLb.textContent='603번 (개략)'; gBase.appendChild(busLb);
-/* 지역 라벨 */
-const areaEls=AREAS.map(a=>{
-  const t=mk('text',{fill:'#8b98ad','font-size':11,'font-weight':800,'text-anchor':'middle','letter-spacing':'-.3'});
-  t.textContent=a.n; gBase.appendChild(t); return {a:a,t:t};
-});
-/* 거리 링 */
+
 const RINGS=[250,500,1000,2000,5000];
 const ringEls=RINGS.map(m=>{
-  const c=mk('circle',{fill:'none',stroke:'#c3cede','stroke-width':1,'stroke-dasharray':'3 4'});
+  const c=mk('circle',{fill:'none',stroke:'#12386b','stroke-width':1,'stroke-dasharray':'3 4',opacity:.35});
   gRing.appendChild(c);
-  const t=mk('text',{fill:'#9aa5b8','font-size':9,'font-weight':700,'text-anchor':'middle'});
+  const t=mk('text',{fill:'#12386b','font-size':9,'font-weight':800,'text-anchor':'middle',opacity:.6,
+    stroke:'#fff','stroke-width':2.5,'paint-order':'stroke'});
   t.textContent=m>=1000?(m/1000)+'km':m+'m'; gRing.appendChild(t);
   return {m:m,c:c,t:t};
 });
+
+/* 내 위치 */
+const meAcc=mk('circle',{fill:'#2f6fdd',opacity:.13,r:0});
+const meOut=mk('circle',{r:11,fill:'#fff',opacity:.95});
+const meDot=mk('circle',{r:7,fill:'#2f6fdd',stroke:'#fff','stroke-width':2.5});
+const meLb =mk('text',{'text-anchor':'middle','font-size':10,'font-weight':800,fill:'#1d4ea8',
+  stroke:'#fff','stroke-width':3,'paint-order':'stroke',dy:-19});
+meLb.textContent='내 위치';
+[meAcc,meOut,meDot,meLb].forEach(e=>gMe.appendChild(e));
+gMe.style.display='none';
 
 /* 핀 */
 MP.forEach(p=>{
   const col=MCAT[p.c].c, big=p.c==='core';
   const g=mk('g',{class:'pinG',cursor:'pointer'});
-  const hit=mk('circle',{r:big?21:16,fill:'transparent'});
   const halo=mk('circle',{r:big?18:0,fill:col,opacity:.16});
-  const dot=mk('circle',{r:big?14:10,fill:col,stroke:'#fff','stroke-width':big?2.5:2});
-  const em=mk('text',{'text-anchor':'middle','font-size':big?15:10.5,dy:big?5.4:3.8});
+  const hit =mk('circle',{r:big?21:16,fill:'transparent'});
+  const dot =mk('circle',{r:big?14:10,fill:col,stroke:'#fff','stroke-width':big?2.5:2});
+  const em  =mk('text',{'text-anchor':'middle','font-size':big?15:10.5,dy:big?5.4:3.8});
   em.textContent=p.e;
   const lb=mk('text',{'text-anchor':'middle','font-size':big?11:9.6,'font-weight':800,
-    fill:'#22304a',stroke:'#fff','stroke-width':3,'paint-order':'stroke',dy:big?-24:-19,'letter-spacing':'-.3'});
+    fill:'#1b2740',stroke:'#fff','stroke-width':3.2,'paint-order':'stroke','letter-spacing':'-.3'});
   lb.textContent=p.n;
-  g.appendChild(halo); g.appendChild(hit); g.appendChild(dot); g.appendChild(em); g.appendChild(lb);
-  g.addEventListener('click',ev=>{ev.stopPropagation(); pick(p);});
+  [halo,hit,dot,em,lb].forEach(e=>g.appendChild(e));
+  g.addEventListener('click',ev=>{ev.stopPropagation(); if(noClick)return; pick(p);});
   gPin.appendChild(g);
-  p.g=g; p.dot=dot; p.halo=halo; p.lb=lb; p.em=em;
+  p.g=g; p.dot=dot; p.halo=halo; p.lb=lb;
 });
-/* z-order: 참고 → 일반 → 일정 → 핵심 순으로 다시 붙여 핵심 핀이 맨 위 */
+/* z-order: 참고 → 저장 → 일반 → 일정 → 핵심 */
 MP.slice().sort((a,b)=>{
-  const s=p=>p.c==='ref'?0:(p.c==='save'?1:(p.d?3:2))+(p.c==='core'?10:0);
+  const s=p=>(p.c==='ref'?0:(p.c==='save'?1:(p.d?3:2)))+(p.c==='core'?10:0);
   return s(a)-s(b);
 }).forEach(p=>gPin.appendChild(p.g));
 
-/* ---- 그리기 ---- */
+/* 한글은 거의 전각, 영문·숫자는 반각 — 라벨 폭 추정 */
+function lblW(s,fs){
+  let u=0;
+  for(const ch of s){ const c=ch.codePointAt(0); u += c>0x2000 ? .96 : (ch===' ' ? .32 : .56); }
+  return Math.max(14, u*fs - s.length*.3 + 8);
+}
 function visible(p){
   if(curFil==='all') return true;
   if(curFil==='D1'||curFil==='D2') return p.c==='core'||(p.d||'').indexOf(curFil)===0;
   return p.c===curFil;
 }
-/* 한글은 거의 전각, 영문·숫자는 반각 — 라벨 폭 추정 */
-function lblW(s,fs){
-  let u=0;
-  for(const ch of s){ const c=ch.codePointAt(0);
-    u += c>0x2000 ? .96 : (ch===' ' ? .32 : .56); }
-  return Math.max(14, u*fs - s.length*.3 + 8);
-}
-function pathOf(pts){return pts.map((q,i)=>(i?'L':'M')+SX(mx(q[1])).toFixed(1)+' '+SY(my(q[0])).toFixed(1)).join(' ');}
+function pathOf(pts){return pts.map((q,i)=>(i?'L':'M')+SX(prX(q[1])).toFixed(1)+' '+SY(prY(q[0])).toFixed(1)).join(' ');}
 
 function draw(fast){
-  const k=view.k;
-  /* 하천 */
-  const showRiver=k<.9;
-  riverEls.forEach(o=>{
-    o.el.setAttribute('d',pathOf(o.r.p));
-    o.el.setAttribute('stroke-width',Math.max(2.5,Math.min(11,k*260)));
-    o.el.style.display=showRiver?'':'none';
-    const midp=o.r.p[Math.floor(o.r.p.length/2)];
-    o.lb.setAttribute('x',SX(mx(midp[1]))); o.lb.setAttribute('y',SY(my(midp[0]))-9);
-    o.lb.style.display=(showRiver&&k<.25)?'':'none';
-  });
-  /* 버스 */
+  drawTiles();
+  const k=kOf();
+  /* 603번 */
   const showBus=k<.25;
-  busEl.setAttribute('d',pathOf(BUS)); busEl.style.display=showBus?'':'none';
-  busLb.setAttribute('x',(SX(mx(BUS[1][1]))+SX(mx(BUS[2][1])))/2);
-  busLb.setAttribute('y',(SY(my(BUS[1][0]))+SY(my(BUS[2][0])))/2-7);
-  busLb.style.display=showBus?'':'none';
-  /* 지역명 */
-  areaEls.forEach(o=>{
-    o.t.setAttribute('x',SX(mx(o.a.lo))); o.t.setAttribute('y',SY(my(o.a.la)));
-    o.t.style.display=k<.16?'':'none';
-  });
-  /* 거리 링 */
-  const hx=SX(HX), hy=SY(HY);
+  busEl.style.display=showBus?'':'none'; busLb.style.display=showBus?'':'none';
+  if(showBus){
+    busEl.setAttribute('d',pathOf(BUS));
+    busLb.setAttribute('x',(SX(prX(BUS[1][1]))+SX(prX(BUS[2][1])))/2);
+    busLb.setAttribute('y',(SY(prY(BUS[1][0]))+SY(prY(BUS[2][0])))/2-7);
+  }
+  /* 숙소 기준 거리 링 */
+  const hx=SX(HU), hy=SY(HV);
   ringEls.forEach(o=>{
-    const r=o.m*k;
-    const on=r>26&&r<2600;
+    const r=o.m*k, on=r>26&&r<2600;
     o.c.style.display=on?'':'none'; o.t.style.display=on?'':'none';
-    if(on){o.c.setAttribute('cx',hx);o.c.setAttribute('cy',hy);o.c.setAttribute('r',r.toFixed(1));
-      o.t.setAttribute('x',hx);o.t.setAttribute('y',(hy-r+11).toFixed(1));}
+    if(on){ o.c.setAttribute('cx',hx); o.c.setAttribute('cy',hy); o.c.setAttribute('r',r.toFixed(1));
+      o.t.setAttribute('x',hx); o.t.setAttribute('y',(hy-r+11).toFixed(1)); }
   });
-  /* 핀 — 1차: 위치 배치 / 2차: 라벨 (핀·라벨 모두와 충돌 검사) */
+  /* 내 위치 — 핀보다 먼저 자리를 잡고, 그 자리를 라벨 충돌 목록에 넣는다 */
   const boxes=[], shown=[];
-  const order=MP.slice().sort((a,b)=>{
+  if(me){
+    const x=SX(me.u), y=SY(me.v);
+    gMe.style.display='';
+    gMe.setAttribute('transform','translate('+x.toFixed(1)+','+y.toFixed(1)+')');
+    meAcc.setAttribute('r', Math.max(0,Math.min(1200, me.acc*k)).toFixed(1));
+    const lbOn = x>34&&x<W-34&&y>34;
+    meLb.style.display=lbOn?'':'none';
+    boxes.push([x-13,y-13,x+13,y+13,null]);
+    if(lbOn) boxes.push([x-26,y-30,x+26,y-16,null]);
+  } else gMe.style.display='none';
+  /* 핀 — 1차 배치 / 2차 라벨 */
+  MP.slice().sort((a,b)=>{
     const s=p=>p===sel?0:(p.c==='core'?1:(p.d?2:(p.c==='ref'?4:3)));
     return s(a)-s(b);
-  });
-  order.forEach(p=>{
-    const on=visible(p);
-    if(!on){ p.g.style.display='none'; return; }
-    const x=SX(p.x), y=SY(p.y);
+  }).forEach(p=>{
+    if(!visible(p)){ p.g.style.display='none'; return; }
+    const x=SX(p.u), y=SY(p.v);
     if(x<-40||x>W+40||y<-40||y>H+40){ p.g.style.display='none'; return; }
     p.g.style.display='';
     p.g.setAttribute('transform','translate('+x.toFixed(1)+','+y.toFixed(1)+')');
-    const isSel=p===sel, core=p.c==='core';
-    const rr=core?14:(isSel?12:10);
-    p.dot.setAttribute('r', rr);
-    p.dot.setAttribute('stroke', isSel?'#12386b':'#fff');
-    p.dot.setAttribute('stroke-width', isSel?3:(core?2.5:2));
-    p.halo.setAttribute('r', core?18:(isSel?20:0));
+    const isSel=p===sel, core=p.c==='core', rr=core?14:(isSel?12:10);
+    p.dot.setAttribute('r',rr);
+    p.dot.setAttribute('stroke',isSel?'#12386b':'#fff');
+    p.dot.setAttribute('stroke-width',isSel?3:(core?2.5:2));
+    p.halo.setAttribute('r',core?18:(isSel?20:0));
     boxes.push([x-rr-1,y-rr-1,x+rr+1,y+rr+1,p]);
     shown.push({p:p,x:x,y:y,sel:isSel,core:core});
     if(isSel&&p.g.nextSibling) gPin.appendChild(p.g);
@@ -1904,7 +1964,6 @@ function draw(fast){
     const p=o.p, lb=p.lb, must=o.core||o.sel;
     if(!must && (fast || k<=.09)){ lb.style.display='none'; return; }
     const fs=o.core?11:9.6, w=lblW(p.n,fs), rr=o.core?14:(o.sel?12:10);
-    /* 위 → 오른쪽 → 왼쪽 → 아래 순으로 빈 자리를 찾는다 */
     const cands=[{a:'middle',dx:0,dy:-(rr+10)},{a:'start',dx:rr+6,dy:fs*.36},
                  {a:'end',dx:-(rr+6),dy:fs*.36},{a:'middle',dx:0,dy:rr+fs+4}];
     let got=null;
@@ -1916,7 +1975,7 @@ function draw(fast){
       if(boxes.some(b=>b[4]!==p && bx[0]<b[2]+2&&bx[2]>b[0]-2&&bx[1]<b[3]+2&&bx[3]>b[1]-2)) continue;
       got={c:c,bx:bx}; break;
     }
-    if(!got && must){   /* 숙소·공연·선택된 핀은 겹쳐도 무조건 표시 */
+    if(!got && must){
       const a = o.x<w/2+10 ? 'start' : (o.x>W-w/2-10 ? 'end' : 'middle');
       got={c:{a:a, dx:(a==='start'?10-o.x:(a==='end'?W-10-o.x:0)), dy:-(rr+10)}, bx:null};
     }
@@ -1928,54 +1987,54 @@ function draw(fast){
     if(got.bx){ got.bx.push(p); boxes.push(got.bx); }
   });
   /* 축척 */
-  const cand=[10,20,50,100,200,300,500,1000,2000,5000];
-  let bestv=cand[0];
-  for(const c of cand){ if(c*k<=46) bestv=c; }
-  document.getElementById('mScaleTxt').textContent=(bestv>=1000?(bestv/1000)+'km':bestv+'m');
-  document.querySelector('.mscale i').style.width=Math.round(bestv*k)+'px';
+  let best=10;
+  for(const c of [10,20,50,100,200,300,500,1000,2000,5000,10000]) if(c*k<=48) best=c;
+  document.getElementById('mScaleTxt').textContent = best>=1000?(best/1000)+'km':best+'m';
+  document.querySelector('.mscale i').style.width=Math.round(best*k)+'px';
 }
 
-/* ---- 정보 패널 ---- */
+/* ---------- 정보 패널 ---------- */
 function pick(p){
   sel=p;
   const col=MCAT[p.c].c;
   const tags=['<span style="background:'+col+'">'+MCAT[p.c].n+'</span>'];
   if(p.d) tags.push('<span style="background:'+(DCOL[p.d]||'#6b7487')+'">'+p.d+'</span>');
-  if(p.c!=='core') tags.push('<span style="background:#eef2fa;color:#41506b">숙소에서 '
-    +(p.dist<1000?p.dist+'m':(p.dist/1000).toFixed(1)+'km')
+  if(p.c!=='core') tags.push('<span style="background:#eef2fa;color:#41506b">숙소에서 '+fmtD(p.dist)
     +(p.dist<1500?' · 도보 '+p.walk+'분':'')+'</span>');
+  if(me){
+    const d=distM(me.la,me.lo,p.la,p.lo);
+    tags.push('<span style="background:#2f6fdd">📍 내 위치에서 '+fmtD(d)
+      +(d<1500?' · 도보 '+Math.max(1,Math.round(d*1.25/67))+'분':'')+'</span>');
+  }
   if(p.ap) tags.push('<span style="background:#f0a13a">위치 근사</span>');
   let h='<div class="mih"><div class="mie">'+p.e+'</div><div class="mit">'
-   +'<b>'+p.n+'</b><p>'+p.w+'</p>'
-   +'<p style="margin-top:4px">📍 '+p.a+'</p>'
+   +'<b>'+p.n+'</b><p>'+p.w+'</p><p style="margin-top:4px">📍 '+p.a+'</p>'
    +'<div class="mtags">'+tags.join('')+'</div></div></div>';
   if(p.k) h+='<div class="mnote">'+p.k+'</div>';
-  h+='<div class="iglnk"><a href="https://map.naver.com/p/search/'+encodeURIComponent(p.q||p.n)+'" target="_blank">🗺️ 네이버 지도</a>'
-   +(p.r?'<a href="'+p.r+'" target="_blank">📸 릴스</a>':'')
-   +'</div>';
+  h+='<div class="iglnk"><a href="https://map.naver.com/p/search/'+encodeURIComponent(p.q||p.n)+'" target="_blank">🗺️ 네이버 지도에서 열기</a>'
+   +(p.r?'<a href="'+p.r+'" target="_blank">📸 릴스</a>':'')+'</div>';
   document.getElementById('mInfo').innerHTML=h;
   draw();
 }
-function focusOn(p,k){
-  view.cx=p.x; view.cy=p.y; if(k) view.k=k;
+function focusOn(p,S){
+  view.cx=p.u; view.cy=p.v; if(S) view.S=Math.max(view.S,S);
   setViewBtn(null); pick(p);
-  document.getElementById('mapWrap').scrollIntoView({behavior:'smooth',block:'center'});
+  wrap.scrollIntoView({behavior:'smooth',block:'center'});
 }
 
-/* ---- 뷰 프리셋 ---- */
+/* ---------- 뷰 프리셋 ---------- */
 function fit(list,pad){
   if(!list.length) return;
-  let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;
-  list.forEach(p=>{x0=Math.min(x0,p.x);x1=Math.max(x1,p.x);y0=Math.min(y0,p.y);y1=Math.max(y1,p.y);});
-  const w=Math.max(x1-x0,120), h=Math.max(y1-y0,120);
-  view.k=Math.min((W-pad*2)/w,(H-pad*2)/h);
-  view.k=Math.max(.012,Math.min(3,view.k));
-  view.cx=(x0+x1)/2; view.cy=(y0+y1)/2;
+  let u0=1e9,u1=-1e9,v0=1e9,v1=-1e9;
+  list.forEach(p=>{u0=Math.min(u0,p.u);u1=Math.max(u1,p.u);v0=Math.min(v0,p.v);v1=Math.max(v1,p.v);});
+  const du=Math.max(u1-u0,1e-6), dv=Math.max(v1-v0,1e-6);
+  view.S=Math.max(S_MIN,Math.min(S_MAX,Math.min((W-pad*2)/du,(H-pad*2)/dv)));
+  view.cx=(u0+u1)/2; view.cy=(v0+v1)/2;
 }
 const VIEWS={
-  old:()=>{ fit(MP.filter(p=>p.dist<620),30); },
-  show:()=>{ fit(MP.filter(p=>p.c==='core'),58); },
-  all:()=>{ fit(MP,34); }
+  old :()=>fit(MP.filter(p=>p.dist<620),34),
+  show:()=>fit(MP.filter(p=>p.c==='core'),52),
+  all :()=>fit(MP,30)
 };
 function setViewBtn(v){
   document.querySelectorAll('.mctl.view button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
@@ -1983,17 +2042,68 @@ function setViewBtn(v){
 document.querySelectorAll('.mctl.view button').forEach(b=>{
   b.addEventListener('click',()=>{ VIEWS[b.dataset.v](); setViewBtn(b.dataset.v); draw(); });
 });
-document.querySelectorAll('.mctl.zoom button').forEach(b=>{
-  b.addEventListener('click',()=>{ zoomAt(W/2,H/2, b.dataset.z==='in'?1.6:1/1.6); setViewBtn(null); });
-});
 function zoomAt(px,py,f){
-  const nk=Math.max(.012,Math.min(3,view.k*f));
-  const wx=view.cx+(px-W/2)/view.k, wy=view.cy+(py-H/2)/view.k;
-  view.k=nk; view.cx=wx-(px-W/2)/nk; view.cy=wy-(py-H/2)/nk;
+  const nS=Math.max(S_MIN,Math.min(S_MAX,view.S*f));
+  const wu=view.cx+(px-W/2)/view.S, wv=view.cy+(py-H/2)/view.S;
+  view.S=nS; view.cx=wu-(px-W/2)/nS; view.cy=wv-(py-H/2)/nS;
   draw();
 }
+document.querySelectorAll('.mctl.zoom button[data-z]').forEach(b=>{
+  b.addEventListener('click',()=>{ zoomAt(W/2,H/2, b.dataset.z==='in'?1.7:1/1.7); setViewBtn(null); });
+});
+/* 지도 스타일 전환 */
+document.getElementById('mStyle').addEventListener('click',function(){
+  tsi=(tsi+1)%TILES.length;
+  this.textContent=TILES[(tsi+1)%TILES.length].n;
+  document.getElementById('mAttr').innerHTML=TILES[tsi].at;
+  draw();
+});
+document.getElementById('mAttr').innerHTML=TILES[tsi].at;
+document.getElementById('mStyle').textContent=TILES[1].n;
 
-/* ---- 필터 ---- */
+/* ---------- 내 위치 ---------- */
+const meBtn=document.getElementById('mLoc');
+function meCard(html,cls){ document.getElementById('mMe').innerHTML = html?'<div class="mecard '+(cls||'')+'">'+html+'</div>':''; }
+function onPos(ps){
+  const c=ps.coords;
+  me={la:c.latitude, lo:c.longitude, acc:c.accuracy||30, u:prX(c.longitude), v:prY(c.latitude)};
+  me.dHome=distM(me.la,me.lo,HOME.la,HOME.lo);
+  const mw=MP.find(p=>p.n==='목원대 대운동장');
+  me.dShow=distM(me.la,me.lo,mw.la,mw.lo);
+  meBtn.classList.remove('busy'); meBtn.classList.add('on');
+  const near=MP.filter(p=>p.c!=='ref').map(p=>({p:p,d:distM(me.la,me.lo,p.la,p.lo)}))
+              .sort((a,b)=>a.d-b.d).slice(0,3);
+  meCard('<b>📍 현재 위치</b> <i>정확도 ±'+Math.round(me.acc)+'m</i>'
+    +'<p>🏠 숙소까지 <b>'+fmtD(me.dHome)+'</b>'+(me.dHome<2500?' · 도보 '+Math.max(1,Math.round(me.dHome*1.25/67))+'분':'')
+    +' &nbsp;·&nbsp; 💦 목원대까지 <b>'+fmtD(me.dShow)+'</b></p>'
+    +'<p class="nr">가까운 곳 — '+near.map(o=>'<span data-n="'+encodeURIComponent(o.p.n)+'">'+o.p.e+' '+o.p.n+' '+fmtD(o.d)+'</span>').join('')+'</p>');
+  document.querySelectorAll('#mMe .nr span').forEach(s=>s.addEventListener('click',()=>{
+    const p=MP.find(q=>q.n===decodeURIComponent(s.dataset.n)); if(p) focusOn(p,6e6);
+  }));
+  if(meFirst){ meFirst=false; view.cx=me.u; view.cy=me.v; if(view.S<5e6) view.S=8e6; setViewBtn(null); }
+  draw();
+  if(sel) pick(sel);
+}
+function onPosErr(e){
+  meBtn.classList.remove('on','busy');
+  const msg = location.protocol==='file:'
+    ? '파일로 열면 위치를 못 써. <b>깃허브 주소</b>로 열면 된다.'
+    : e.code===1 ? '위치 권한이 꺼져 있어. 사파리 주소창 왼쪽 <b>ᴀA → 웹사이트 설정 → 위치 → 허용</b> 후 다시 눌러줘.'
+    : e.code===3 ? '위치 찾기가 오래 걸려. 실외로 나가서 다시 눌러봐.'
+    : '위치를 못 찾았어. 실내라면 GPS가 약할 수 있어.';
+  meCard('<b>⚠️ 내 위치</b><p>'+msg+'</p>','warn');
+}
+meBtn.addEventListener('click',()=>{
+  if(!navigator.geolocation){ meCard('<b>⚠️ 내 위치</b><p>이 브라우저는 위치를 지원하지 않아.</p>','warn'); return; }
+  if(me){ view.cx=me.u; view.cy=me.v; if(view.S<8e6) view.S=12e6; setViewBtn(null); draw(); return; }
+  meBtn.classList.add('busy');
+  meCard('<b>📍 내 위치</b><p>찾는 중… 권한 요청이 뜨면 <b>허용</b>을 눌러줘.</p>');
+  navigator.geolocation.getCurrentPosition(onPos,onPosErr,{enableHighAccuracy:true,timeout:12000,maximumAge:20000});
+  if(watchId===null) watchId=navigator.geolocation.watchPosition(onPos,()=>{},
+    {enableHighAccuracy:true,maximumAge:10000,timeout:20000});
+});
+
+/* ---------- 필터 ---------- */
 const FILS=[['all','전체'],['D1','1일차'],['D2','2일차'],['core','🏠 핵심'],
  ['eat','🍽️ 맛집'],['cafe','☕ 카페·빵'],['bar','🍶 술집'],['play','🎪 놀거리'],
  ['move','🚌 이동'],['save','📌 저장']];
@@ -2006,92 +2116,93 @@ document.querySelectorAll('#mFil button').forEach(b=>{
   });
 });
 
-/* ---- 범례 ---- */
+/* ---------- 범례 ---------- */
 document.getElementById('mLeg').innerHTML=
  Object.keys(MCAT).map(k=>'<span><i style="background:'+MCAT[k].c+'"></i>'+MCAT[k].n+'</span>').join('')
- +'<span style="color:#6d9fc0">〰️ 하천(개략)</span><span style="color:#c02a40">┈ 603번(개략)</span>';
+ +'<span><i style="background:#2f6fdd;box-shadow:0 0 0 1.5px #fff,0 0 0 4px rgba(47,111,221,.28)"></i>내 위치</span>'
+ +'<span style="color:#c02a40">┈ 603번(개략)</span>';
 
-/* ---- 거리 목록 ---- */
+/* ---------- 거리 목록 ---------- */
 (function(){
   const rows=MP.filter(p=>p.c!=='core').slice().sort((a,b)=>a.dist-b.dist);
   const row=p=>'<div class="drow" data-n="'+encodeURIComponent(p.n)+'">'
     +'<span class="de">'+p.e+'</span><span class="dn">'+p.n+'</span>'
-    +'<span class="dd">'+(p.dist<1000?p.dist+'m':(p.dist/1000).toFixed(1)+'km')+'</span>'
+    +'<span class="dd">'+fmtD(p.dist)+'</span>'
     +'<span class="dw">'+(p.dist<1500?'도보 '+p.walk+'분':'차 이동')+'</span></div>';
   const wk=rows.filter(p=>p.dist<1200), dr=rows.filter(p=>p.dist>=1200);
   document.getElementById('mDistWalk').innerHTML=wk.map(row).join('');
   document.getElementById('mDistDrive').innerHTML=dr.map(row).join('');
   document.getElementById('mCntWalk').textContent=wk.length+'곳';
   document.getElementById('mCntDrive').textContent=dr.length+'곳';
-  document.querySelectorAll('.drow').forEach(d=>{
-    d.addEventListener('click',()=>{
-      const p=MP.find(q=>q.n===decodeURIComponent(d.dataset.n));
-      if(p) focusOn(p,Math.max(view.k,.5));
-    });
-  });
+  document.querySelectorAll('.drow').forEach(d=>d.addEventListener('click',()=>{
+    const p=MP.find(q=>q.n===decodeURIComponent(d.dataset.n));
+    if(p) focusOn(p,1.2e7);
+  }));
 })();
 
-/* ---- 제스처 ---- */
-const pts=new Map(); let last=null, pinch=null, moved=0, downT=0;
-function rel(e){const r=svgEl.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}
-svgEl.addEventListener('pointerdown',e=>{
+/* ---------- 제스처 ---------- */
+const pts=new Map(); let last=null, pinch=null, moved=0;
+function rel(e){const r=wrap.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}
+wrap.addEventListener('pointerdown',e=>{
+  if(e.target.closest('.mctl,.mscale,.matt')) return;
   const hn=document.getElementById('mHint'); if(hn) hn.style.display='none';
-  svgEl.setPointerCapture(e.pointerId); pts.set(e.pointerId,rel(e));
-  moved=0; downT=Date.now();
-  if(pts.size===1){last=rel(e); dragging=true; svgEl.classList.add('drag');}
-  else if(pts.size===2){const a=[...pts.values()];pinch={d:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y),
-    mx:(a[0].x+a[1].x)/2,my:(a[0].y+a[1].y)/2};}
+  wrap.setPointerCapture(e.pointerId); pts.set(e.pointerId,rel(e)); moved=0;
+  if(pts.size===1){ last=rel(e); wrap.classList.add('drag'); }
+  else if(pts.size===2){ const a=[...pts.values()];
+    pinch={d:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y),mx:(a[0].x+a[1].x)/2,my:(a[0].y+a[1].y)/2}; }
 });
-svgEl.addEventListener('pointermove',e=>{
-  if(!pts.has(e.pointerId))return;
+wrap.addEventListener('pointermove',e=>{
+  if(!pts.has(e.pointerId)) return;
   const p=rel(e); pts.set(e.pointerId,p);
   if(pts.size===2&&pinch){
     const a=[...pts.values()], d=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y);
     if(pinch.d>4){ zoomAt(pinch.mx,pinch.my,d/pinch.d); setViewBtn(null); }
-    pinch.d=d; pinch.mx=(a[0].x+a[1].x)/2; pinch.my=(a[0].y+a[1].y)/2;
-    moved=99; return;
+    pinch.d=d; pinch.mx=(a[0].x+a[1].x)/2; pinch.my=(a[0].y+a[1].y)/2; moved=99; return;
   }
-  if(dragging&&last){
+  if(last){
     const dx=p.x-last.x, dy=p.y-last.y; moved+=Math.abs(dx)+Math.abs(dy);
-    view.cx-=dx/view.k; view.cy-=dy/view.k; last=p; setViewBtn(null); draw(true);
+    view.cx-=dx/view.S; view.cy-=dy/view.S; last=p; setViewBtn(null); draw(true);
   }
 });
 function up(e){
+  if(!pts.has(e.pointerId)) return;
   pts.delete(e.pointerId);
-  if(pts.size<2)pinch=null;
-  if(pts.size===0){dragging=false;last=null;svgEl.classList.remove('drag');draw();}
+  if(pts.size<2) pinch=null;
+  noClick = moved>8; setTimeout(()=>{noClick=false;},80);
+  if(pts.size===0){ last=null; wrap.classList.remove('drag'); draw(); }
   else last=[...pts.values()][0];
 }
-svgEl.addEventListener('pointerup',up); svgEl.addEventListener('pointercancel',up);
-svgEl.addEventListener('wheel',e=>{e.preventDefault();const p=rel(e);
-  zoomAt(p.x,p.y,e.deltaY<0?1.18:1/1.18); setViewBtn(null);},{passive:false});
-svgEl.addEventListener('dblclick',e=>{const p=rel(e);zoomAt(p.x,p.y,1.9);setViewBtn(null);});
+wrap.addEventListener('pointerup',up); wrap.addEventListener('pointercancel',up);
+wrap.addEventListener('wheel',e=>{ e.preventDefault(); const p=rel(e);
+  zoomAt(p.x,p.y,e.deltaY<0?1.2:1/1.2); setViewBtn(null); },{passive:false});
+wrap.addEventListener('dblclick',e=>{ if(e.target.closest('.mctl'))return;
+  const p=rel(e); zoomAt(p.x,p.y,2); setViewBtn(null); });
+wrap.addEventListener('contextmenu',e=>e.preventDefault());
 
-/* ---- 리사이즈 / 초기화 ---- */
+/* ---------- 초기화 ---------- */
 let inited=false;
 function resize(){
-  const w=svgEl.clientWidth, h=svgEl.clientHeight;
+  const w=wrap.clientWidth, h=wrap.clientHeight;
   if(!w||!h) return false;
-  W=w;H=h; svgEl.setAttribute('viewBox','0 0 '+W+' '+H);
+  W=w; H=h; svgEl.setAttribute('viewBox','0 0 '+W+' '+H);
   return true;
 }
 function init(){
-  if(inited) return;
-  if(!resize()) return;
+  if(inited||!resize()) return;
   inited=true; VIEWS.old(); setViewBtn('old'); draw();
 }
-window.addEventListener('resize',()=>{ if(resize()) draw(); });
-document.querySelector('nav button[data-t="map"]').addEventListener('click',()=>{
-  setTimeout(init,30);
-});
-if(document.getElementById('map').classList.contains('on')) setTimeout(init,30);
+window.addEventListener('resize',()=>{ if(inited&&resize()) draw(); });
+window.addEventListener('orientationchange',()=>setTimeout(()=>{ if(inited&&resize()) draw(); },250));
+document.querySelector('nav button[data-t="map"]').addEventListener('click',()=>setTimeout(init,40));
+if(document.getElementById('map').classList.contains('on')) setTimeout(init,40);
 
 window.__mapFocus=function(name){
-  const p=MP.find(q=>q.n===name); if(!p)return;
+  const p=MP.find(q=>q.n===name); if(!p) return;
   document.querySelector('nav button[data-t="map"]').click();
-  setTimeout(()=>{init();focusOn(p,Math.max(view.k,.5));},60);
+  setTimeout(()=>{ init(); focusOn(p,1.2e7); },80);
 };
 })();
+
 
 </script>
 </body>
